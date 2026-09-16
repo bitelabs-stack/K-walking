@@ -1,0 +1,1663 @@
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WALK KOREA | 한국형 Walking Journey Platform - Korean Camino</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter & Plus Jakarta Sans & Noto Serif KR -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Noto+Serif+KR:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            earth: {
+              50: '#fbf9f5',
+              100: '#f5f0e6',
+              200: '#ebdcc5',
+              300: '#dec29e',
+              400: '#cda275',
+              500: '#be8754',
+              600: '#b07347',
+              700: '#925c3b',
+              800: '#774b34',
+              900: '#613e2d',
+            },
+            camino: {
+              forest: '#233d2e',
+              sage: '#4b6e58',
+              moss: '#718f77',
+              sand: '#f7f4ed',
+              gold: '#d4a373',
+              clay: '#bc6c25',
+              sea: '#1d4e68',
+            }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+            serif: ['"Noto Serif KR"', 'Georgia', 'serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .glass-nav {
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      background: rgba(255, 255, 255, 0.85);
+    }
+    .hero-gradient {
+      background: linear-gradient(180deg, rgba(16, 31, 23, 0.35) 0%, rgba(20, 36, 27, 0.75) 100%);
+    }
+    .custom-scroll::-webkit-scrollbar {
+      height: 6px;
+      width: 6px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: #cda275;
+      border-radius: 9999px;
+    }
+    .stamp-badge {
+      box-shadow: 0 0 0 4px #be8754, inset 0 0 0 2px #be8754;
+    }
+    @keyframes pulseSlow {
+      0%, 100% { transform: scale(1); opacity: 0.9; }
+      50% { transform: scale(1.05); opacity: 1; }
+    }
+    .animate-pulse-slow {
+      animation: pulseSlow 4s infinite ease-in-out;
+    }
+  </style>
+</head>
+<body class="bg-[#faf8f5] text-slate-800 font-sans antialiased selection:bg-camino-gold selection:text-white">
+
+  <div class="bg-camino-forest text-stone-200 text-xs sm:text-sm py-2 px-4 text-center tracking-wide font-medium flex items-center justify-center gap-2">
+    <span class="inline-block w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+    <span data-i18n="topBanner">2026 Korean Camino Pilot Program: Special Early-Bird Access Open for Global Pilgrims</span>
+    <button onclick="scrollToSection('journey-finder')" class="underline hover:text-white ml-2 transition">
+      <span data-i18n="topBannerCta">Explore Journeys &rarr;</span>
+    </button>
+  </div>
+
+  <header class="sticky top-0 z-50 glass-nav border-b border-stone-200/80 transition-all duration-300 shadow-sm" id="navbar">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <a href="#" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-camino-forest to-camino-sage flex items-center justify-center shadow-md text-white group-hover:scale-105 transition transform">
+          <i data-lucide="compass" class="w-5 h-5 text-amber-200"></i>
+        </div>
+        <div class="flex flex-col">
+          <span class="text-xl font-bold tracking-tight text-stone-900 font-sans flex items-center gap-1">
+            WALK KOREA <span class="text-xs px-2 py-0.5 rounded-full bg-stone-100 text-camino-forest border border-stone-200 font-semibold uppercase tracking-wider">Pilgrimage</span>
+          </span>
+          <span class="text-[11px] text-stone-500 font-serif italic -mt-1" data-i18n="brandSub">길을 찾는 것이 아니라 나를 찾는 여행</span>
+        </div>
+      </a>
+
+      <!-- Desktop Navigation Menu -->
+      <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-stone-700">
+        <a href="#about-philosophy" class="hover:text-camino-forest transition" data-i18n="navPhilosophy">철학과 가치</a>
+        <a href="#how-it-works" class="hover:text-camino-forest transition" data-i18n="navFlow">여정 흐름</a>
+        <a href="#journey-finder" class="hover:text-camino-forest transition" data-i18n="navFinder">맞춤 Journey</a>
+        <a href="#stage-planner" class="hover:text-camino-forest transition" data-i18n="navStage">스테이지 & 숙소</a>
+        <a href="#pilgrim-stories" class="hover:text-camino-forest transition" data-i18n="navStories">순례자 기록</a>
+        <a href="#founder-story" class="hover:text-camino-forest transition" data-i18n="navFounder">창업자 이야기</a>
+      </nav>
+
+      <!-- Utility: Language Switcher & Primary CTA -->
+      <div class="flex items-center gap-3">
+        <!-- Language Switcher -->
+        <button id="langToggleBtn" onclick="toggleLanguage()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-stone-300 bg-white/90 text-xs font-semibold text-stone-700 hover:border-camino-forest hover:text-camino-forest transition shadow-sm" title="Change Language">
+          <i data-lucide="globe" class="w-3.5 h-3.5"></i>
+          <span id="currentLangLabel">EN</span>
+        </button>
+
+        <button onclick="openEarlyAccessModal()" class="hidden sm:inline-flex items-center gap-2 bg-camino-forest hover:bg-stone-900 text-stone-100 px-4 py-2.5 rounded-xl text-xs font-semibold transition shadow-md hover:shadow-lg transform active:scale-95">
+          <span data-i18n="navPassportBtn">여권 발급 & 시작하기</span>
+          <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+        </button>
+
+        <!-- Mobile Menu Toggle Button -->
+        <button onclick="toggleMobileMenu()" class="md:hidden p-2 rounded-lg text-stone-700 hover:bg-stone-100">
+          <i data-lucide="menu" id="menuIcon" class="w-6 h-6"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Drawer Menu -->
+    <div id="mobileMenu" class="hidden md:hidden bg-white/95 border-b border-stone-200 px-6 py-5 space-y-4 text-sm font-medium text-stone-800 transition">
+      <a href="#about-philosophy" onclick="toggleMobileMenu()" class="block py-1 hover:text-camino-forest" data-i18n="navPhilosophy">철학과 가치</a>
+      <a href="#how-it-works" onclick="toggleMobileMenu()" class="block py-1 hover:text-camino-forest" data-i18n="navFlow">여정 흐름</a>
+      <a href="#journey-finder" onclick="toggleMobileMenu()" class="block py-1 hover:text-camino-forest" data-i18n="navFinder">맞춤 Journey</a>
+      <a href="#stage-planner" onclick="toggleMobileMenu()" class="block py-1 hover:text-camino-forest" data-i18n="navStage">스테이지 & 숙소</a>
+      <a href="#pilgrim-stories" onclick="toggleMobileMenu()" class="block py-1 hover:text-camino-forest" data-i18n="navStories">순례자 기록</a>
+      <a href="#founder-story" onclick="toggleMobileMenu()" class="block py-1 hover:text-camino-forest" data-i18n="navFounder">창업자 이야기</a>
+      <div class="pt-2 border-t border-stone-200">
+        <button onclick="openEarlyAccessModal(); toggleMobileMenu();" class="w-full text-center bg-camino-forest text-white py-2.5 rounded-xl text-sm font-semibold">
+          <span data-i18n="navPassportBtn">여권 발급 & 시작하기</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <section class="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
+    <!-- Visual Background: Realistic Coastal Walking Trail Mockup with Gradient Overlay -->
+    <div class="absolute inset-0 z-0">
+      <img 
+        src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=2000&q=80" 
+        alt="Korean Scenic Trail Coastal Mountain" 
+        class="w-full h-full object-cover object-center scale-105 transform animate-pulse-slow duration-[10000ms]"
+        onerror="this.src='https://placehold.co/1920x1080/233d2e/ffffff?text=WALK+KOREA+Journey'"
+      />
+      <div class="absolute inset-0 hero-gradient"></div>
+    </div>
+
+    <!-- Hero Content Overlay -->
+    <div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white py-20">
+      
+      <!-- Sub-badge -->
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/15 border border-white/25 backdrop-blur-md text-xs sm:text-sm font-medium text-amber-200 mb-6 shadow-sm">
+        <i data-lucide="sparkles" class="w-4 h-4 text-amber-300"></i>
+        <span data-i18n="heroBadge">한국형 순례길 &bull; Korean Camino for Global Travelers</span>
+      </div>
+
+      <!-- Main Headline -->
+      <h1 class="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-semibold tracking-tight leading-tight sm:leading-tight mb-6">
+        <span class="block" data-i18n="heroTitle1">길을 찾는 것이 아니라,</span>
+        <span class="text-amber-300 italic font-sans" data-i18n="heroTitle2">나를 찾는 여행</span>
+      </h1>
+
+      <!-- Description -->
+      <p class="max-w-2xl mx-auto text-base sm:text-lg md:text-xl text-stone-200 font-normal leading-relaxed mb-10 text-balance" data-i18n="heroDesc">
+        한국의 길을 걷고, 나의 이야기를 남기며, 지역의 온기를 경험하는 장거리 걷기 여행 플랫폼. 왜 걷는가에 대한 해답과 온전한 하루의 쉼을 설계해 드립니다.
+      </p>
+
+      <!-- Action Buttons -->
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-md mx-auto">
+        <button onclick="scrollToSection('journey-finder')" class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-camino-gold hover:bg-amber-600 text-stone-950 font-bold text-sm tracking-wide transition transform hover:-translate-y-0.5 shadow-xl flex items-center justify-center gap-2">
+          <i data-lucide="map-pin" class="w-4 h-4"></i>
+          <span data-i18n="heroBtnFind">내 목적에 맞는 여정 찾기</span>
+        </button>
+        <button onclick="scrollToSection('stage-planner')" class="w-full sm:w-auto px-7 py-4 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/30 backdrop-blur-sm text-stone-100 font-semibold text-sm transition flex items-center justify-center gap-2">
+          <i data-lucide="calendar" class="w-4 h-4"></i>
+          <span data-i18n="heroBtnStage">스테이지 & 숙소 설계</span>
+        </button>
+      </div>
+
+      <!-- Trust Metrics Bar -->
+      <div class="mt-16 pt-8 border-t border-white/15 grid grid-cols-2 md:grid-cols-4 gap-6 text-stone-300 text-left sm:text-center">
+        <div>
+          <p class="text-2xl sm:text-3xl font-bold text-white font-sans">4,500<span class="text-amber-300 text-lg">km+</span></p>
+          <p class="text-xs text-stone-300 font-medium uppercase tracking-wider mt-1" data-i18n="metric1">코리아둘레길 인프라 연계</p>
+        </div>
+        <div>
+          <p class="text-2xl sm:text-3xl font-bold text-white font-sans">±1<span class="text-amber-300 text-lg">km</span></p>
+          <p class="text-xs text-stone-300 font-medium uppercase tracking-wider mt-1" data-i18n="metric2">종점 직결 도보권 숙소 매칭</p>
+        </div>
+        <div>
+          <p class="text-2xl sm:text-3xl font-bold text-white font-sans">100<span class="text-amber-300 text-lg">%</span></p>
+          <p class="text-xs text-stone-300 font-medium uppercase tracking-wider mt-1" data-i18n="metric3">다국어 안심 길 & 대중교통 안내</p>
+        </div>
+        <div>
+          <p class="text-2xl sm:text-3xl font-bold text-white font-sans">1,240<span class="text-amber-300 text-lg">+</span></p>
+          <p class="text-xs text-stone-300 font-medium uppercase tracking-wider mt-1" data-i18n="metric4">순례자의 삶과 생각 기록</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="about-philosophy" class="py-24 bg-[#f6f2ea] border-b border-stone-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Section Title Header -->
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <span class="text-xs font-bold uppercase tracking-widest text-camino-clay bg-amber-100/60 px-3 py-1 rounded-full" data-i18n="phiBadge">The Core Philosophy</span>
+        <h2 class="text-3xl sm:text-4xl font-serif font-bold text-stone-900 mt-4 mb-4" data-i18n="phiTitle">한국의 수많은 길, 우리는 왜 등산 코스로만 걸었을까요?</h2>
+        <p class="text-stone-600 text-base sm:text-lg leading-relaxed" data-i18n="phiDesc">
+          길 자체는 이미 충분합니다. 부족한 것은 그 길을 하나의 온전한 삶의 쉼과 성찰, 그리고 지역과의 따뜻한 연결로 엮어주는 서비스였습니다.
+        </p>
+      </div>
+
+      <!-- 3 Core Pillars -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        
+        <!-- Pillar 1 -->
+        <div class="bg-white rounded-3xl p-8 shadow-sm border border-stone-200/80 hover:shadow-md transition group">
+          <div class="w-14 h-14 rounded-2xl bg-amber-50 text-camino-clay flex items-center justify-center mb-6 group-hover:scale-110 transition">
+            <i data-lucide="compass" class="w-7 h-7"></i>
+          </div>
+          <h3 class="text-xl font-bold text-stone-900 mb-3" data-i18n="pillar1Title">Route가 아닌 Journey</h3>
+          <p class="text-stone-600 text-sm leading-relaxed" data-i18n="pillar1Desc">
+            단순히 코스 길이와 난이도(km/소요시간)를 묻지 않습니다. 지친 마음의 회복, 인생의 전환, 바다와 함께 걷는 사색 등 당신의 '걷는 목적'에 맞춘 여정을 제안합니다.
+          </p>
+          <div class="mt-6 pt-4 border-t border-stone-100 flex items-center text-xs font-semibold text-camino-forest gap-1">
+            <i data-lucide="check-circle" class="w-4 h-4 text-emerald-600"></i>
+            <span data-i18n="pillar1Tag">목적 &bull; 체력 맞춤형 큐레이션</span>
+          </div>
+        </div>
+
+        <!-- Pillar 2 -->
+        <div class="bg-white rounded-3xl p-8 shadow-sm border border-stone-200/80 hover:shadow-md transition group">
+          <div class="w-14 h-14 rounded-2xl bg-emerald-50 text-camino-sage flex items-center justify-center mb-6 group-hover:scale-110 transition">
+            <i data-lucide="bed-double" class="w-7 h-7"></i>
+          </div>
+          <h3 class="text-xl font-bold text-stone-900 mb-3" data-i18n="pillar2Title">종점 도보 1km, 쉼의 안식처</h3>
+          <p class="text-stone-600 text-sm leading-relaxed" data-i18n="pillar2Desc">
+            하루 20km를 걸은 후 다시 버스를 타고 먼 시내 숙소로 가지 마세요. 오늘 걸음이 멈추는 종점 반경 1km 내의 민박, 게스트하우스, 세탁 및 따뜻한 로컬 식당을 직접 잇습니다.
+          </p>
+          <div class="mt-6 pt-4 border-t border-stone-100 flex items-center text-xs font-semibold text-camino-forest gap-1">
+            <i data-lucide="check-circle" class="w-4 h-4 text-emerald-600"></i>
+            <span data-i18n="pillar2Tag">종점 직결 숙소 & 편의시설 보장</span>
+          </div>
+        </div>
+
+        <!-- Pillar 3 -->
+        <div class="bg-white rounded-3xl p-8 shadow-sm border border-stone-200/80 hover:shadow-md transition group">
+          <div class="w-14 h-14 rounded-2xl bg-amber-50 text-camino-gold flex items-center justify-center mb-6 group-hover:scale-110 transition">
+            <i data-lucide="book-heart" class="w-7 h-7"></i>
+          </div>
+          <h3 class="text-xl font-bold text-stone-900 mb-3" data-i18n="pillar3Title">별점 대신 깊은 깨달음의 기록</h3>
+          <p class="text-stone-600 text-sm leading-relaxed" data-i18n="pillar3Desc">
+            "경치가 좋아요" 같은 일회성 리뷰 대신 "오늘 길에서 무엇을 느꼈나요?"라는 물음에 남겨진 이전 순례자들의 진솔한 고백과 한 줄이 다음 여행자에게 횃불이 됩니다.
+          </p>
+          <div class="mt-6 pt-4 border-t border-stone-100 flex items-center text-xs font-semibold text-camino-forest gap-1">
+            <i data-lucide="check-circle" class="w-4 h-4 text-emerald-600"></i>
+            <span data-i18n="pillar3Tag">디지털 순례자 여권 & Story 아카이브</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="how-it-works" class="py-24 bg-white border-b border-stone-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <span class="text-xs font-bold uppercase tracking-widest text-camino-sage bg-emerald-50 px-3 py-1 rounded-full" data-i18n="flowBadge">How It Works</span>
+        <h2 class="text-3xl sm:text-4xl font-serif font-bold text-stone-900 mt-4 mb-4" data-i18n="flowTitle">목적 선택에서 Pilgrim Story까지</h2>
+        <p class="text-stone-600 text-sm sm:text-base" data-i18n="flowDesc">
+          사용자의 걷는 이유에서 출발하여, 하루 일정과 지역의 따뜻한 환대를 거쳐 다음 여행자에게 영감을 남기는 5단계 여정입니다.
+        </p>
+      </div>
+
+      <!-- 5-Step Process Timeline -->
+      <div class="grid grid-cols-1 md:grid-cols-5 gap-4 relative">
+        <!-- Step 1 -->
+        <div class="relative bg-stone-50 rounded-2xl p-6 border border-stone-200 text-center flex flex-col items-center hover:bg-amber-50/50 transition">
+          <div class="w-12 h-12 rounded-full bg-camino-forest text-amber-200 flex items-center justify-center font-bold text-lg mb-4 shadow-sm">1</div>
+          <div class="w-14 h-14 rounded-2xl bg-amber-100/60 text-stone-800 flex items-center justify-center mb-3">
+            <i data-lucide="milestone" class="w-6 h-6 text-camino-clay"></i>
+          </div>
+          <h4 class="font-bold text-stone-900 mb-1" data-i18n="step1Title">걷는 목적 선택</h4>
+          <p class="text-xs text-stone-500" data-i18n="step1Desc">회복, 나를 찾는 길, 바다, 사찰, 도전 등 내면의 이유 선택</p>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="relative bg-stone-50 rounded-2xl p-6 border border-stone-200 text-center flex flex-col items-center hover:bg-amber-50/50 transition">
+          <div class="w-12 h-12 rounded-full bg-camino-forest text-amber-200 flex items-center justify-center font-bold text-lg mb-4 shadow-sm">2</div>
+          <div class="w-14 h-14 rounded-2xl bg-emerald-100/60 text-stone-800 flex items-center justify-center mb-3">
+            <i data-lucide="map" class="w-6 h-6 text-camino-sage"></i>
+          </div>
+          <h4 class="font-bold text-stone-900 mb-1" data-i18n="step2Title">맞춤 Journey 추천</h4>
+          <p class="text-xs text-stone-500" data-i18n="step2Desc">일정(3일~7일), 체력, 언어 환경에 최적화된 테마형 장거리 여정 매칭</p>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="relative bg-stone-50 rounded-2xl p-6 border border-stone-200 text-center flex flex-col items-center hover:bg-amber-50/50 transition">
+          <div class="w-12 h-12 rounded-full bg-camino-forest text-amber-200 flex items-center justify-center font-bold text-lg mb-4 shadow-sm">3</div>
+          <div class="w-14 h-14 rounded-2xl bg-blue-100/60 text-stone-800 flex items-center justify-center mb-3">
+            <i data-lucide="home" class="w-6 h-6 text-camino-sea"></i>
+          </div>
+          <h4 class="font-bold text-stone-900 mb-1" data-i18n="step3Title">일별 Stage & 숙소</h4>
+          <p class="text-xs text-stone-500" data-i18n="step3Desc">하루 15~20km 분할과 오늘의 종점 도보 1km 안 숙박·세탁소 완벽 연결</p>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="relative bg-stone-50 rounded-2xl p-6 border border-stone-200 text-center flex flex-col items-center hover:bg-amber-50/50 transition">
+          <div class="w-12 h-12 rounded-full bg-camino-forest text-amber-200 flex items-center justify-center font-bold text-lg mb-4 shadow-sm">4</div>
+          <div class="w-14 h-14 rounded-2xl bg-orange-100/60 text-stone-800 flex items-center justify-center mb-3">
+            <i data-lucide="utensils-crossed" class="w-6 h-6 text-camino-gold"></i>
+          </div>
+          <h4 class="font-bold text-stone-900 mb-1" data-i18n="step4Title">지역 경험 연결</h4>
+          <p class="text-xs text-stone-500" data-i18n="step4Desc">사찰 템플스테이, 시골 오일장, 마을 어르신의 따뜻한 국밥 한 그릇</p>
+        </div>
+
+        <!-- Step 5 -->
+        <div class="relative bg-stone-50 rounded-2xl p-6 border border-stone-200 text-center flex flex-col items-center hover:bg-amber-50/50 transition">
+          <div class="w-12 h-12 rounded-full bg-camino-forest text-amber-200 flex items-center justify-center font-bold text-lg mb-4 shadow-sm">5</div>
+          <div class="w-14 h-14 rounded-2xl bg-purple-100/60 text-stone-800 flex items-center justify-center mb-3">
+            <i data-lucide="feather" class="w-6 h-6 text-purple-700"></i>
+          </div>
+          <h4 class="font-bold text-stone-900 mb-1" data-i18n="step5Title">Pilgrim Story 기록</h4>
+          <p class="text-xs text-stone-500" data-i18n="step5Desc">길 위에서 마주한 내면의 감정을 기록하고 디지털 스탬프 여권 완성</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="journey-finder" class="py-24 bg-[#faf8f5] border-b border-stone-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-3xl mx-auto mb-14">
+        <span class="text-xs font-bold uppercase tracking-widest text-camino-clay bg-amber-100/70 px-3 py-1 rounded-full" data-i18n="finderBadge">Interactive Matcher</span>
+        <h2 class="text-3xl sm:text-4xl font-serif font-bold text-stone-900 mt-4 mb-4" data-i18n="finderTitle">나에게 맞는 Korean Camino 찾기</h2>
+        <p class="text-stone-600 text-sm sm:text-base" data-i18n="finderDesc">
+          당신의 마음 상태와 여행 가능한 기간을 선택하세요. 최적화된 하루 일정과 지역 쉼터가 준비되어 있습니다.
+        </p>
+      </div>
+
+      <!-- Filter Controls -->
+      <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-stone-200/80 mb-12">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          
+          <!-- Category 1: Walking Purpose -->
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-stone-500 mb-3 flex items-center gap-1.5">
+              <i data-lucide="compass" class="w-4 h-4 text-camino-clay"></i>
+              <span data-i18n="filterPurposeLabel">1. 걷는 목적 (Purpose)</span>
+            </label>
+            <div class="flex flex-wrap gap-2" id="purposeButtonGroup">
+              <button onclick="setFilter('purpose', 'all')" class="purpose-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-stone-900 text-white transition active-btn" data-val="all">전체 All</button>
+              <button onclick="setFilter('purpose', 'healing')" class="purpose-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-stone-100 text-stone-700 hover:bg-stone-200 transition" data-val="healing">회복 & 쉼</button>
+              <button onclick="setFilter('purpose', 'reflection')" class="purpose-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-stone-100 text-stone-700 hover:bg-stone-200 transition" data-val="reflection">나를 찾는 길</button>
+              <button onclick="setFilter('purpose', 'sea')" class="purpose-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-stone-100 text-stone-700 hover:bg-stone-200 transition" data-val="sea">동해 바다길</button>
+              <button onclick="setFilter('purpose', 'temple')" class="purpose-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-stone-100 text-stone-700 hover:bg-stone-200 transition" data-val="temple">사찰 & 명상</button>
+            </div>
+          </div>
+
+          <!-- Category 2: Duration -->
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-stone-500 mb-3 flex items-center gap-1.5">
+              <i data-lucide="calendar" class="w-4 h-4 text-camino-sage"></i>
+              <span data-i18n="filterDaysLabel">2. 일정 기간 (Duration)</span>
+            </label>
+            <div class="grid grid-cols-3 gap-2" id="durationButtonGroup">
+              <button onclick="setFilter('days', 'all')" class="duration-btn px-3 py-2 rounded-xl text-xs font-semibold bg-stone-900 text-white transition" data-val="all">전체</button>
+              <button onclick="setFilter('days', '3')" class="duration-btn px-3 py-2 rounded-xl text-xs font-semibold bg-stone-100 text-stone-700 hover:bg-stone-200 transition" data-val="3">3 Days</button>
+              <button onclick="setFilter('days', '5+')" class="duration-btn px-3 py-2 rounded-xl text-xs font-semibold bg-stone-100 text-stone-700 hover:bg-stone-200 transition" data-val="5+">5~7 Days</button>
+            </div>
+          </div>
+
+          <!-- Category 3: Pace & Distance -->
+          <div>
+            <div class="flex justify-between items-center mb-2">
+              <label class="text-xs font-bold uppercase tracking-wider text-stone-500 flex items-center gap-1.5">
+                <i data-lucide="footprints" class="w-4 h-4 text-camino-gold"></i>
+                <span data-i18n="filterPaceLabel">3. 하루 희망 거리 (Daily Pace)</span>
+              </label>
+              <span id="paceDisplay" class="text-xs font-bold text-camino-forest bg-stone-100 px-2.5 py-0.5 rounded-full">18 km/day</span>
+            </div>
+            <input 
+              type="range" 
+              id="paceRange" 
+              min="10" 
+              max="28" 
+              value="18" 
+              step="2" 
+              oninput="updatePace(this.value)"
+              class="w-full h-2 bg-stone-200 rounded-lg appearance-none cursor-pointer accent-camino-clay"
+            />
+            <div class="flex justify-between text-[10px] text-stone-400 mt-1 font-medium">
+              <span>여유롭게 (10km)</span>
+              <span>스탠다드 (18km)</span>
+              <span>도전 (28km)</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Matched Journey Cards Grid -->
+      <div id="journeyGrid" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Rendered dynamically by JS -->
+      </div>
+
+    </div>
+  </section>
+
+  <section id="stage-planner" class="py-24 bg-white border-b border-stone-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+        <div class="max-w-2xl">
+          <span class="text-xs font-bold uppercase tracking-widest text-emerald-800 bg-emerald-100/70 px-3 py-1 rounded-full" data-i18n="plannerBadge">Stage & Local Stay Planner</span>
+          <h2 class="text-3xl sm:text-4xl font-serif font-bold text-stone-900 mt-3" data-i18n="plannerTitle">하루 단위 스테이지 & 종점 ±1km 숙소</h2>
+          <p class="text-stone-600 text-sm sm:text-base mt-2" data-i18n="plannerDesc">
+            걷기가 끝난 후 피곤한 몸을 이끌고 먼 곳으로 이동하지 마세요. 오늘의 종점에서 걸어서 닿는 로컬 숙소와 회고 질문을 매일 제공합니다.
+          </p>
+        </div>
+
+        <!-- Journey Selector Tabs -->
+        <div class="mt-4 md:mt-0 flex gap-2 overflow-x-auto pb-2">
+          <button onclick="switchStageSample('haeparang')" id="tabHaeparang" class="px-4 py-2 rounded-xl text-xs font-bold bg-camino-forest text-white transition shadow-sm">
+            해파랑 5-Day Journey
+          </button>
+          <button onclick="switchStageSample('jeju')" id="tabJeju" class="px-4 py-2 rounded-xl text-xs font-bold bg-stone-100 text-stone-700 hover:bg-stone-200 transition">
+            제주 슬로우 3-Day
+          </button>
+        </div>
+      </div>
+
+      <!-- Active Stage Detailed Interactive Card -->
+      <div class="bg-stone-50 rounded-3xl border border-stone-200 p-6 sm:p-10 shadow-sm">
+        
+        <!-- Day Selector Pills -->
+        <div class="flex items-center gap-3 overflow-x-auto pb-4 mb-8 custom-scroll" id="dayPillContainer">
+          <!-- Dynamically inserted day tabs -->
+        </div>
+
+        <!-- Stage Main Content Body -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start" id="stageDetailBox">
+          <!-- Filled by JavaScript based on active day -->
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="pilgrim-stories" class="py-24 bg-[#faf8f5] border-b border-stone-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center mb-16">
+        
+        <!-- Left: Interactive Digital Passport Showcase -->
+        <div class="lg:col-span-5">
+          <div class="bg-stone-900 text-stone-100 rounded-3xl p-7 shadow-2xl relative overflow-hidden border border-stone-800">
+            <!-- Decorative Gold Edge -->
+            <div class="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="flex justify-between items-center border-b border-stone-800 pb-4 mb-6">
+              <div class="flex items-center gap-3">
+                <i data-lucide="award" class="w-6 h-6 text-amber-300"></i>
+                <div>
+                  <h4 class="text-sm font-bold uppercase tracking-widest text-amber-200 font-sans">Digital Pilgrim Passport</h4>
+                  <p class="text-[11px] text-stone-400 font-serif">한국형 걷기여행 순례 여권</p>
+                </div>
+              </div>
+              <span class="text-xs bg-amber-900/60 text-amber-300 px-2.5 py-1 rounded-full border border-amber-500/30">Verified Pilgrim</span>
+            </div>
+
+            <!-- Passport Stamps Grid -->
+            <div class="grid grid-cols-3 gap-3 mb-6" id="passportStampGrid">
+              <!-- Interactive Stamp 1 -->
+              <div onclick="toggleStamp(this)" class="cursor-pointer border border-dashed border-stone-700 hover:border-amber-400/80 rounded-2xl p-3 text-center transition group bg-stone-800/40">
+                <div class="w-10 h-10 mx-auto rounded-full bg-stone-800 flex items-center justify-center text-amber-300 mb-1 group-hover:scale-110 transition">
+                  <i data-lucide="waves" class="w-5 h-5"></i>
+                </div>
+                <p class="text-[10px] font-bold text-stone-300">정동진 바다</p>
+                <p class="text-[9px] text-amber-300/80">DAY 1 &bull; STAMPED</p>
+              </div>
+
+              <!-- Interactive Stamp 2 -->
+              <div onclick="toggleStamp(this)" class="cursor-pointer border border-dashed border-stone-700 hover:border-amber-400/80 rounded-2xl p-3 text-center transition group bg-stone-800/40">
+                <div class="w-10 h-10 mx-auto rounded-full bg-stone-800 flex items-center justify-center text-amber-300 mb-1 group-hover:scale-110 transition">
+                  <i data-lucide="mountain" class="w-5 h-5"></i>
+                </div>
+                <p class="text-[10px] font-bold text-stone-300">옥계 솔숲길</p>
+                <p class="text-[9px] text-amber-300/80">DAY 2 &bull; STAMPED</p>
+              </div>
+
+              <!-- Interactive Stamp 3 (Locked or Clickable) -->
+              <div onclick="toggleStamp(this)" class="cursor-pointer border border-dashed border-amber-400/40 bg-amber-950/20 rounded-2xl p-3 text-center transition group">
+                <div class="w-10 h-10 mx-auto rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center mb-1 group-hover:scale-110 transition">
+                  <i data-lucide="sun" class="w-5 h-5"></i>
+                </div>
+                <p class="text-[10px] font-bold text-amber-200">망상 일출길</p>
+                <p class="text-[9px] text-stone-400">클릭하여 스탬프 날인</p>
+              </div>
+            </div>
+
+            <!-- Pilgrim's Own One-Sentence Record -->
+            <div class="bg-stone-800/80 rounded-2xl p-4 border border-stone-700/60 mb-6">
+              <p class="text-[10px] text-amber-300 uppercase tracking-widest font-semibold mb-1">Pilgrim's One Sentence</p>
+              <p class="text-xs text-stone-300 font-serif italic" id="myPassportSentence">
+                "혼자 걷는 게 외로운 줄 알았는데, 바다 바람을 맞으며 걷다 보니 오늘은 혼자인 게 온전한 자유였다."
+              </p>
+              <div class="mt-2 text-right">
+                <span class="text-[10px] text-stone-500 font-mono">2026.09.18 &bull; 해파랑 Stage 36</span>
+              </div>
+            </div>
+
+            <!-- Action button -->
+            <button onclick="openEarlyAccessModal()" class="w-full py-3 rounded-xl bg-camino-gold hover:bg-amber-500 text-stone-950 font-bold text-xs transition shadow-md flex items-center justify-center gap-2">
+              <i data-lucide="check" class="w-4 h-4"></i>
+              <span data-i18n="passportCta">나만의 모바일 순례 여권 발급받기</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Right: Story Narrative Introduction -->
+        <div class="lg:col-span-7">
+          <span class="text-xs font-bold uppercase tracking-widest text-camino-clay bg-amber-100/70 px-3 py-1 rounded-full" data-i18n="storyBadge">Pilgrim Community & Stories</span>
+          <h2 class="text-3xl sm:text-4xl font-serif font-bold text-stone-900 mt-4 mb-4" data-i18n="storyTitle">
+            단순한 길 후기가 아닙니다.<br/>먼저 걸은 사람들의 깨달음과 위로입니다.
+          </h2>
+          <p class="text-stone-600 text-sm sm:text-base leading-relaxed mb-6" data-i18n="storyDesc">
+            "경치 좋고 오르막이 힘들었어요" 같은 흔한 등산 리뷰 대신, "오늘 길에서 무엇을 내려놓았나요?"라는 성찰 질문에 남겨진 생생한 이야기들입니다. 같은 길을 걸어가는 순례자들의 문장이 서로의 이정표가 됩니다.
+          </p>
+
+          <div class="flex items-center gap-4">
+            <div class="flex -space-x-2 overflow-hidden">
+              <img class="inline-block h-10 w-10 rounded-full ring-2 ring-white object-cover" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80" alt="Pilgrim">
+              <img class="inline-block h-10 w-10 rounded-full ring-2 ring-white object-cover" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=80" alt="Pilgrim">
+              <img class="inline-block h-10 w-10 rounded-full ring-2 ring-white object-cover" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=120&q=80" alt="Pilgrim">
+            </div>
+            <div>
+              <p class="text-xs font-bold text-stone-900">전 세계 1,240명 이상의 순례자가 기록 중</p>
+              <p class="text-[11px] text-stone-500">한국, 스페인, 프랑스, 미국, 일본 등 다국적 워커</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Real Pilgrim Story Cards Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <!-- Story Card 1 -->
+        <div class="bg-white rounded-3xl p-6 border border-stone-200 shadow-sm flex flex-col justify-between hover:border-camino-gold transition">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <div class="flex items-center gap-2.5">
+                <div class="w-9 h-9 rounded-full bg-emerald-100 text-emerald-800 font-bold flex items-center justify-center text-xs">JM</div>
+                <div>
+                  <h5 class="text-xs font-bold text-stone-900">정민 (Min)</h5>
+                  <p class="text-[10px] text-stone-500">해파랑길 3-Day 완료 &bull; 서울</p>
+                </div>
+              </div>
+              <span class="text-[10px] bg-stone-100 text-stone-600 px-2 py-0.5 rounded font-mono">Day 2</span>
+            </div>
+            <p class="text-xs text-stone-700 font-serif italic leading-relaxed mb-4">
+              "퇴사하고 막막한 심정으로 동해 바닷길을 걸었습니다. 파도 소리를 들으며 7시간 동안 걷다 보니, 내가 진짜 두려워했던 것은 실패가 아니라 남들의 시선이었다는 걸 깨달았습니다. 작은 민박집 할머니가 건네주신 감자전이 눈물 나게 따뜻했어요."
+            </p>
+          </div>
+          <div class="pt-3 border-t border-stone-100 flex justify-between items-center text-[10px] text-stone-400">
+            <span>정동진 &rarr; 옥계 구간</span>
+            <span class="flex items-center gap-1 text-camino-clay font-medium"><i data-lucide="heart" class="w-3 h-3 fill-current"></i> 48 공감</span>
+          </div>
+        </div>
+
+        <!-- Story Card 2 (Foreign Pilgrim) -->
+        <div class="bg-white rounded-3xl p-6 border border-stone-200 shadow-sm flex flex-col justify-between hover:border-camino-gold transition">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <div class="flex items-center gap-2.5">
+                <div class="w-9 h-9 rounded-full bg-amber-100 text-amber-800 font-bold flex items-center justify-center text-xs">LH</div>
+                <div>
+                  <h5 class="text-xs font-bold text-stone-900">Lucas Hansen</h5>
+                  <p class="text-[10px] text-stone-500">Korean Camino 5-Day &bull; Denmark</p>
+                </div>
+              </div>
+              <span class="text-[10px] bg-amber-50 text-amber-700 px-2 py-0.5 rounded font-mono">Day 4</span>
+            </div>
+            <p class="text-xs text-stone-700 font-serif italic leading-relaxed mb-4">
+              "I walked the Camino de Santiago in 2022, but walking through Korean seaside villages and ancient temple forests is an entirely unique spiritual awakening. The daily English stage guide with exact guesthouse luggage transfers made it seamless for a foreigner."
+            </p>
+          </div>
+          <div class="pt-3 border-t border-stone-100 flex justify-between items-center text-[10px] text-stone-400">
+            <span>Jeju Olle & East Coast</span>
+            <span class="flex items-center gap-1 text-camino-clay font-medium"><i data-lucide="heart" class="w-3 h-3 fill-current"></i> 92 공감</span>
+          </div>
+        </div>
+
+        <!-- Story Card 3 -->
+        <div class="bg-white rounded-3xl p-6 border border-stone-200 shadow-sm flex flex-col justify-between hover:border-camino-gold transition">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <div class="flex items-center gap-2.5">
+                <div class="w-9 h-9 rounded-full bg-blue-100 text-blue-800 font-bold flex items-center justify-center text-xs">SY</div>
+                <div>
+                  <h5 class="text-xs font-bold text-stone-900">서영 (Seoyoung)</h5>
+                  <p class="text-[10px] text-stone-500">오대산 사찰명상 3-Day &bull; 대구</p>
+                </div>
+              </div>
+              <span class="text-[10px] bg-stone-100 text-stone-600 px-2 py-0.5 rounded font-mono">Day 1</span>
+            </div>
+            <p class="text-xs text-stone-700 font-serif italic leading-relaxed mb-4">
+              "스마트폰을 끄고 전나무 숲길을 걸었습니다. '오늘 길에서 무엇을 내려놓았나요?'라는 WALK KOREA 질문 알림을 보고 가만히 멈춰 섰습니다. 불안해하던 내 미래를 잠시 길바닥에 내려두고 현재의 발자국 소리에만 온전히 귀를 기울였습니다."
+            </p>
+          </div>
+          <div class="pt-3 border-t border-stone-100 flex justify-between items-center text-[10px] text-stone-400">
+            <span>월정사 &rarr; 상원사 전나무길</span>
+            <span class="flex items-center gap-1 text-camino-clay font-medium"><i data-lucide="heart" class="w-3 h-3 fill-current"></i> 64 공감</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="founder-story" class="py-24 bg-[#ede8dc] border-b border-stone-200 relative overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        
+        <!-- Left: Realistic Photo Collage based on Founder's Attached Camino Moments -->
+        <div class="lg:col-span-6 space-y-6">
+          <div class="relative">
+            <!-- Main Photo Card 1: Sunset Silhouette on the Trail -->
+            <div class="rounded-3xl overflow-hidden shadow-2xl border-4 border-white bg-stone-900 group">
+              <img 
+                src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=1200&q=80" 
+                alt="Founder Camino Experience Silhouette" 
+                class="w-full h-80 object-cover object-center group-hover:scale-105 transition duration-700"
+                onerror="this.src='https://placehold.co/800x600/233d2e/ffffff?text=Pilgrim+Sunrise+Walk'"
+              />
+              <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-5 text-white">
+                <span class="text-[10px] font-mono tracking-widest text-amber-300 uppercase">Camino de Santiago &bull; The Awakening</span>
+                <p class="text-xs font-serif italic mt-0.5">"새벽길을 걸으며 마주한 햇살 속에서, 비로소 나 자신과 진정한 화해를 할 수 있었습니다."</p>
+              </div>
+            </div>
+
+            <!-- Overlapping Photo Card 2: Friends on the stone wall overlooking the village -->
+            <div class="absolute -bottom-10 -right-4 sm:-right-8 w-3/5 rounded-2xl overflow-hidden shadow-2xl border-4 border-white hidden sm:block">
+              <img 
+                src="https://images.unsplash.com/photo-1527631746610-bca00a040d60?auto=format&fit=crop&w=800&q=80" 
+                alt="Pilgrim Companionship" 
+                class="w-full h-48 object-cover"
+                onerror="this.src='https://placehold.co/600x400/925c3b/ffffff?text=Camino+Companions'"
+              />
+              <div class="bg-stone-900/90 text-white p-2.5 text-center">
+                <p class="text-[10px] text-amber-200 font-medium">국경을 넘어 서로의 등을 토닥여주던 길 위의 친구들</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-8 sm:pt-4">
+            <blockquote class="border-l-2 border-camino-clay pl-4 italic text-stone-700 text-xs sm:text-sm font-serif">
+              "길 자체는 이미 우리 곁에 충분했습니다. 부족했던 것은 그 길을 걸으며 나를 마주하게 해주는 경험과 따뜻한 사람의 온기였습니다."
+            </blockquote>
+          </div>
+        </div>
+
+        <!-- Right: The Narrative & Why WALK KOREA -->
+        <div class="lg:col-span-6 space-y-6">
+          <span class="text-xs font-bold uppercase tracking-widest text-camino-forest bg-stone-200/80 px-3 py-1 rounded-full" data-i18n="founderBadge">Founder's Note</span>
+          <h2 class="text-3xl sm:text-4xl font-serif font-bold text-stone-900 leading-tight" data-i18n="founderTitle">
+            아이슬란드의 오로라부터 산티아고의 순례길까지,<br/>그리고 다시 한국의 아름다운 길로.
+          </h2>
+          
+          <div class="space-y-4 text-stone-700 text-sm leading-relaxed">
+            <p data-i18n="founderP1">
+              아이슬란드에서 1년간의 워킹홀리데이를 마치고 한국으로 돌아오기 전, 유럽 여행의 마지막 종착지에서 산티아고 순례길을 걸었습니다.
+            </p>
+            <p data-i18n="founderP2">
+              산티아고에서 가장 큰 울림을 주었던 것은 유명 관광 명소가 아니었습니다. 매일 묵묵히 걷고, 낯선 이와 빵을 나누고, 하루의 피로 끝에 나 자신을 돌아보는 지극히 단순한 생활 속에서 저마다의 상처가 회복되는 기적이었습니다.
+            </p>
+            <p data-i18n="founderP3">
+              한국에 돌아왔을 때 마음속에 깊은 물음표가 남았습니다. <strong class="text-stone-900 font-semibold">"우리에게도 제주올레, 해파랑길, 코리아둘레길처럼 경이로운 4,500km의 길이 있는데, 왜 우리는 이를 단순한 체력 훈련이나 난이도 중심의 등산 코스로만 소비하고 있을까?"</strong>
+            </p>
+            <p data-i18n="founderP4">
+              WALK KOREA는 한국의 길을 누구나 자신의 이유로 걷고, 자신의 이야기를 남기며, 시골 작은 마을의 할머니와 따뜻한 식탁을 마주하는 '한국형 순례길(Korean Camino)'로 다시 태어나게 하기 위한 담대한 여정입니다.
+            </p>
+          </div>
+
+          <!-- Founder Profile Signature Box -->
+          <div class="pt-4 flex items-center justify-between border-t border-stone-300">
+            <div>
+              <p class="text-sm font-bold text-stone-900">WALK KOREA 창업팀</p>
+              <p class="text-xs text-stone-500">모두의 창업 2기 | Korean Camino Project</p>
+            </div>
+            <div class="font-serif italic text-lg text-camino-clay">Walk Korea, Find Yourself</div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <section class="py-20 bg-camino-forest text-stone-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-3xl mx-auto mb-14">
+        <span class="text-xs font-bold uppercase tracking-widest text-amber-300 bg-white/10 px-3 py-1 rounded-full" data-i18n="globalBadge">Global Pilgrim Ready</span>
+        <h2 class="text-3xl sm:text-4xl font-serif font-bold text-white mt-4 mb-3" data-i18n="globalTitle">외국인 여행자도 언어와 길 잃을 걱정 없이</h2>
+        <p class="text-stone-300 text-sm sm:text-base" data-i18n="globalDesc">
+          한국 대중교통 환승, 작은 시골 마을 숙소 체크인, 식사 예절과 비상 안전까지 다국어로 통합 설계되어 해외 순례자도 안심하고 발걸음을 옮깁니다.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        
+        <div class="bg-stone-800/60 border border-stone-700/80 rounded-2xl p-6 backdrop-blur-sm">
+          <div class="w-10 h-10 rounded-xl bg-amber-400/20 text-amber-300 flex items-center justify-center mb-4">
+            <i data-lucide="languages" class="w-5 h-5"></i>
+          </div>
+          <h4 class="font-bold text-white text-base mb-2" data-i18n="feat1Title">다국어 안심 가이드</h4>
+          <p class="text-xs text-stone-300 leading-relaxed" data-i18n="feat1Desc">한국어, 영어, 일본어, 중국어로 제공되는 코스 해설과 문화 가이드북.</p>
+        </div>
+
+        <div class="bg-stone-800/60 border border-stone-700/80 rounded-2xl p-6 backdrop-blur-sm">
+          <div class="w-10 h-10 rounded-xl bg-emerald-400/20 text-emerald-300 flex items-center justify-center mb-4">
+            <i data-lucide="truck" class="w-5 h-5"></i>
+          </div>
+          <h4 class="font-bold text-white text-base mb-2" data-i18n="feat2Title">순례자 짐 배송 서비스</h4>
+          <p class="text-xs text-stone-300 leading-relaxed" data-i18n="feat2Desc">무거운 캐리어는 다음 종점 숙소로 먼저 보내고 가벼운 배낭 하나로 걷기.</p>
+        </div>
+
+        <div class="bg-stone-800/60 border border-stone-700/80 rounded-2xl p-6 backdrop-blur-sm">
+          <div class="w-10 h-10 rounded-xl bg-blue-400/20 text-blue-300 flex items-center justify-center mb-4">
+            <i data-lucide="shield-check" class="w-5 h-5"></i>
+          </div>
+          <h4 class="font-bold text-white text-base mb-2" data-i18n="feat3Title">실시간 안전 & SOS</h4>
+          <p class="text-xs text-stone-300 leading-relaxed" data-i18n="feat3Desc">길 이탈 알림, 최근 통제 구간 우회로 안내, 원클릭 비상 연락망 가동.</p>
+        </div>
+
+        <div class="bg-stone-800/60 border border-stone-700/80 rounded-2xl p-6 backdrop-blur-sm">
+          <div class="w-10 h-10 rounded-xl bg-orange-400/20 text-orange-300 flex items-center justify-center mb-4">
+            <i data-lucide="bus" class="w-5 h-5"></i>
+          </div>
+          <h4 class="font-bold text-white text-base mb-2" data-i18n="feat4Title">로컬 버스 & 이탈 지원</h4>
+          <p class="text-xs text-stone-300 leading-relaxed" data-i18n="feat4Desc">체력 저하시 가까운 버스 정류장과 서울/거점 도시 복귀 경로 원스톱 매핑.</p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <section class="py-24 bg-stone-900 text-white relative overflow-hidden text-center">
+    <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#d4a373_1px,transparent_1px)] [background-size:16px_16px]"></div>
+    
+    <div class="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="w-16 h-16 rounded-full bg-amber-500/20 text-amber-300 mx-auto flex items-center justify-center mb-6 ring-8 ring-amber-500/10">
+        <i data-lucide="send" class="w-8 h-8"></i>
+      </div>
+
+      <h2 class="text-3xl sm:text-5xl font-serif font-bold tracking-tight mb-4" data-i18n="ctaTitle">
+        당신의 첫 번째 순례 여정을 시작하세요
+      </h2>
+      <p class="text-stone-400 text-sm sm:text-base max-w-xl mx-auto mb-10 leading-relaxed" data-i18n="ctaDesc">
+        모두의 창업 2기 파일럿 여정에 사전 등록하시면, <strong class="text-amber-300 font-semibold">'Korean Camino 가이드북 & 모바일 여권'</strong>을 가장 먼저 무료로 발급해 드립니다.
+      </p>
+
+      <!-- Email Capture Form -->
+      <form onsubmit="handleEarlyAccessSubmit(event)" class="max-w-md mx-auto flex flex-col sm:flex-row gap-3">
+        <input 
+          type="email" 
+          id="ctaEmailInput" 
+          required 
+          placeholder="your.email@walkkorea.org" 
+          class="flex-1 px-5 py-4 rounded-2xl bg-stone-800/90 border border-stone-700 text-stone-100 placeholder-stone-500 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
+        />
+        <button type="submit" class="px-7 py-4 rounded-2xl bg-camino-gold hover:bg-amber-500 text-stone-950 font-bold text-sm transition shadow-lg flex items-center justify-center gap-2 whitespace-nowrap">
+          <span data-i18n="ctaSubmitBtn">사전 등록하기</span>
+          <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </button>
+      </form>
+
+      <p class="text-[11px] text-stone-500 mt-4" data-i18n="ctaSubNote">
+        스팸 없이 오직 공식 파일럿 여정 초대장과 특별 할인 혜택만 전달됩니다.
+      </p>
+    </div>
+  </section>
+
+  <footer class="bg-stone-950 text-stone-400 text-xs py-14 border-t border-stone-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+        <div class="space-y-3">
+          <div class="flex items-center gap-2 text-white font-bold text-base">
+            <i data-lucide="compass" class="w-5 h-5 text-amber-300"></i>
+            <span>WALK KOREA</span>
+          </div>
+          <p class="text-stone-400 text-xs font-serif leading-relaxed">
+            한국의 길을 걷고, 나의 이야기를 남기며, 지역을 경험하는 글로벌 장거리 걷기여행 플랫폼
+          </p>
+          <p class="text-[11px] text-stone-500">&copy; 2026 WALK KOREA Inc. All rights reserved.</p>
+        </div>
+
+        <div>
+          <h5 class="text-stone-200 font-bold uppercase tracking-wider mb-3">Key Journeys</h5>
+          <ul class="space-y-2 text-stone-400">
+            <li><a href="#journey-finder" class="hover:text-amber-300 transition">3-Day Reset Walk</a></li>
+            <li><a href="#journey-finder" class="hover:text-amber-300 transition">5-Day East Coast Camino</a></li>
+            <li><a href="#journey-finder" class="hover:text-amber-300 transition">7-Day Finding Myself</a></li>
+            <li><a href="#journey-finder" class="hover:text-amber-300 transition">Jeju Slow Olle Walk</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h5 class="text-stone-200 font-bold uppercase tracking-wider mb-3">Platform</h5>
+          <ul class="space-y-2 text-stone-400">
+            <li><a href="#stage-planner" class="hover:text-amber-300 transition">Stage Planner (±1km Stay)</a></li>
+            <li><a href="#pilgrim-stories" class="hover:text-amber-300 transition">Digital Pilgrim Passport</a></li>
+            <li><a href="#founder-story" class="hover:text-amber-300 transition">Founder's Note</a></li>
+            <li><a href="#" onclick="openEarlyAccessModal()" class="hover:text-amber-300 transition">Local Partner B2B</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h5 class="text-stone-200 font-bold uppercase tracking-wider mb-3">Startup Program</h5>
+          <p class="text-stone-400 mb-2">모두의 창업 2기 도전과제</p>
+          <p class="text-[11px] text-stone-500 leading-relaxed">
+            본 서비스는 한국관광공사 코리아둘레길, 제주올레 및 지역 소상공인과의 상생을 지향하는 예비창업 프로젝트입니다.
+          </p>
+        </div>
+      </div>
+
+      <div class="pt-8 border-t border-stone-800/80 flex flex-col sm:flex-row items-center justify-between text-stone-500 gap-4">
+        <p>Built with ❤️ for Global Pilgrims in Korea.</p>
+        <div class="flex gap-4">
+          <a href="#" class="hover:text-stone-300 transition">Privacy Policy</a>
+          <a href="#" class="hover:text-stone-300 transition">Terms of Service</a>
+          <a href="#" class="hover:text-stone-300 transition">Safety Guidelines</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div id="earlyAccessModal" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl relative border border-stone-200 transform transition-all">
+      <button onclick="closeEarlyAccessModal()" class="absolute top-5 right-5 p-2 text-stone-400 hover:text-stone-700 rounded-full hover:bg-stone-100">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="text-center mb-6">
+        <div class="w-12 h-12 rounded-2xl bg-amber-100 text-camino-clay mx-auto flex items-center justify-center mb-3">
+          <i data-lucide="compass" class="w-6 h-6"></i>
+        </div>
+        <h3 class="text-xl font-bold text-stone-900 font-serif" data-i18n="modalTitle">디지털 순례 여권 사전 발급</h3>
+        <p class="text-xs text-stone-500 mt-1" data-i18n="modalDesc">당신의 첫 번째 한국 순례길을 함께 시작할 정보를 입력해주세요.</p>
+      </div>
+
+      <form onsubmit="handleModalFormSubmit(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-stone-700 mb-1" data-i18n="modalNameLabel">성함 또는 닉네임</label>
+          <input type="text" id="modalName" required placeholder="순례자 이름 (예: Alex, 지우)" class="w-full px-4 py-2.5 rounded-xl border border-stone-300 text-sm focus:outline-none focus:ring-2 focus:ring-camino-clay" />
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-stone-700 mb-1" data-i18n="modalEmailLabel">이메일 주소</label>
+          <input type="email" id="modalEmail" required placeholder="pilgrim@walkkorea.org" class="w-full px-4 py-2.5 rounded-xl border border-stone-300 text-sm focus:outline-none focus:ring-2 focus:ring-camino-clay" />
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-stone-700 mb-1" data-i18n="modalInterestLabel">가장 걷고 싶은 여정</label>
+          <select id="modalJourneySelect" class="w-full px-4 py-2.5 rounded-xl border border-stone-300 text-sm focus:outline-none focus:ring-2 focus:ring-camino-clay bg-white text-stone-800">
+            <option value="haeparang5">해파랑 5-Day East Coast Journey (바다와 성찰)</option>
+            <option value="reset3">3-Day Reset Walk (지친 마음의 회복)</option>
+            <option value="jejuSlow">Jeju Slow 4-Day Olle (바람과 돌담)</option>
+            <option value="temple3">Temple & Meditation Walk (사찰과 숲길)</option>
+          </select>
+        </div>
+
+        <div class="pt-2">
+          <button type="submit" class="w-full py-3.5 rounded-xl bg-camino-forest hover:bg-stone-900 text-white font-bold text-sm transition shadow-md flex items-center justify-center gap-2">
+            <i data-lucide="check-circle" class="w-4 h-4 text-amber-300"></i>
+            <span data-i18n="modalBtnSubmit">여권 발급 및 초대장 받기</span>
+          </button>
+        </div>
+      </form>
+
+      <div class="mt-4 text-center">
+        <p class="text-[10px] text-stone-400">개인정보는 파일럿 오픈 알림 및 맞춤 여정 가이드 제공 목적으로만 안전하게 사용됩니다.</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="toastNotification" class="fixed bottom-6 right-6 z-50 hidden bg-stone-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl border border-stone-700 flex items-center gap-3 transition transform translate-y-4 duration-300">
+    <div class="w-6 h-6 rounded-full bg-emerald-500 text-white flex items-center justify-center shrink-0">
+      <i data-lucide="check" class="w-3.5 h-3.5"></i>
+    </div>
+    <div class="text-xs">
+      <p class="font-bold text-amber-300" id="toastTitle">성공적으로 등록되었습니다</p>
+      <p class="text-stone-300 text-[11px]" id="toastMessage">사전 여권 발급 번호가 이메일로 전송되었습니다.</p>
+    </div>
+  </div>
+
+  <script>
+    /* ============================================================
+       1. DATA STRUCTURES: JOURNEYS & MULTI-DAY STAGES
+       ============================================================ */
+    const JOURNEY_DATABASE = [
+      {
+        id: 'haeparang-5day',
+        title: '5-Day East Coast Journey',
+        koreanTitle: '해파랑 동해안 5일 순례길',
+        badge: '인기 여정',
+        badgeEn: 'Most Loved',
+        purpose: ['healing', 'reflection', 'sea'],
+        durationDays: 5,
+        totalDistanceKm: 92,
+        recommendedPace: 18,
+        imageUrl: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
+        summaryKo: '강릉 안목해변부터 망상, 동해항까지 이어지는 파도와 솔숲의 여정. 바다를 보며 생각을 비우기에 가장 완벽합니다.',
+        summaryEn: 'A reflective seaside pilgrimage along the East Coast from Gangneung to Donghae. Perfect for cleansing busy minds with ocean breezes.',
+        stagesCount: '5개 스테이지',
+        stayGuarantee: '종점 도보 1km 숙소 완비',
+        tags: ['동해안', '바다소리', '혼자걷기', '해산물 로컬식당']
+      },
+      {
+        id: 'reset-3day',
+        title: '3-Day Reset Walk',
+        koreanTitle: '3일 리셋 워크 (지친 마음 회복)',
+        badge: '주말 힐링',
+        badgeEn: 'Weekend Reset',
+        purpose: ['healing', 'reflection'],
+        durationDays: 3,
+        totalDistanceKm: 48,
+        recommendedPace: 16,
+        imageUrl: 'https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=800&q=80',
+        summaryKo: '복잡한 도시를 벗어나 오대산 전나무 숲과 계곡을 걸으며 지친 뇌를 쉬게 하는 2박 3일 회복 프로그램.',
+        summaryEn: 'Unplug and reset. Walk through peaceful fir forest trails and mountain valleys in Gangwon, healing burnout within 3 days.',
+        stagesCount: '3개 스테이지',
+        stayGuarantee: '전통 한옥스테이 & 다도',
+        tags: ['숲치유', '산림욕', '마음회복', '오프라인 휴식']
+      },
+      {
+        id: 'jeju-slow-4day',
+        title: 'Jeju Slow Coastal Walk',
+        koreanTitle: '제주 슬로우 바당길 4일',
+        badge: '슬로우 트립',
+        badgeEn: 'Slow Living',
+        purpose: ['healing', 'sea'],
+        durationDays: 5, // 4-5 category
+        totalDistanceKm: 65,
+        recommendedPace: 15,
+        imageUrl: 'https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&w=800&q=80',
+        summaryKo: '제주 남쪽 올레길의 검은 현무암과 귤밭, 바람을 마주하며 천천히 걸어가는 사색의 길.',
+        summaryEn: 'Immerse into black basalt stone walls, mandarin orchards, and coastal winds of southern Jeju at a gentle, mindful tempo.',
+        stagesCount: '4개 스테이지',
+        stayGuarantee: '돌담 게스트하우스',
+        tags: ['제주올레', '돌담길', '해녀의 집', '노을뷰']
+      },
+      {
+        id: 'temple-meditation-3day',
+        title: 'Temple & Meditation Trail',
+        koreanTitle: '사찰 & 내면명상 순례길 3일',
+        badge: '영성 & 성찰',
+        badgeEn: 'Mindfulness',
+        purpose: ['reflection', 'temple'],
+        durationDays: 3,
+        totalDistanceKm: 42,
+        recommendedPace: 14,
+        imageUrl: 'https://images.unsplash.com/photo-1545235617-9465d2a55698?auto=format&fit=crop&w=800&q=80',
+        summaryKo: '천년 고찰의 범종 소리와 새벽 예불, 숲길 걷기명상을 결합하여 내면의 본질을 찾는 한국형 침묵 순례.',
+        summaryEn: 'Hear the temple bell at dawn, practice silent walking meditation through ancient paths, and reconnect with your inner core.',
+        stagesCount: '3개 스테이지',
+        stayGuarantee: '사찰 템플스테이 직결',
+        tags: ['사찰체험', '걷기명상', '발우공양', '내면대화']
+      }
+    ];
+
+    const STAGE_SAMPLES = {
+      haeparang: [
+        {
+          day: 1,
+          routeTitle: '강릉 안목해변 &rarr; 정동진 모래시계공원',
+          distance: '18.4 km',
+          duration: '약 5시간 30분',
+          elevation: '최대 110m (완만)',
+          stayName: '정동진 솔바람 게스트하우스 & 민박',
+          stayDistance: '종점 도보 350m (도보 4분)',
+          facilities: ['순례자 세탁 지원', '개별 샤워실', '해변 조식 제공', '배낭 픽업'],
+          reflectionQuestion: '오늘 처음 바다를 보며 걷기 시작했을 때, 머릿속을 가장 먼저 스쳐 지나간 생각은 무엇이었나요?',
+          reflectionQuestionEn: 'When you first started walking with the sea, what was the very first thought that crossed your mind?',
+          localEat: '초당 순두부 백반 & 정동진 바지락 칼국수'
+        },
+        {
+          day: 2,
+          routeTitle: '정동진 &rarr; 옥계 해변마을',
+          distance: '19.2 km',
+          duration: '약 6시간',
+          elevation: '최대 180m (작은 언덕 숲길)',
+          stayName: '옥계 옛나루 흙집 쉼터',
+          stayDistance: '종점 도보 500m (도보 7분)',
+          facilities: ['황토방 온돌 온기', '빨래건조대', '비건 식사 옵션'],
+          reflectionQuestion: '혼자 걷는 시간이 길어질 때, 당신은 외로움을 느끼나요 아니면 홀가분함을 느끼나요?',
+          reflectionQuestionEn: 'When the path stretches alone, do you feel isolation or liberated serenity?',
+          localEat: '옥계 장칼국수 & 메밀전병'
+        },
+        {
+          day: 3,
+          routeTitle: '옥계 해변 &rarr; 망상 명사십리 솔숲',
+          distance: '16.8 km',
+          duration: '약 5시간',
+          elevation: '최대 60m (평탄한 해변로)',
+          stayName: '망상 솔향 스테이 & 북카페',
+          stayDistance: '종점 도보 200m (도보 2분)',
+          facilities: ['서재 및 다도 공간', '세탁기 무료', '짐 다음 숙소 이동 서비스'],
+          reflectionQuestion: '파도가 밀려왔다 나가는 모습을 보며, 내 삶에서 이제는 떠나보내야 할 묵은 감정은 무엇인가요?',
+          reflectionQuestionEn: 'Watching the waves arrive and retreat, what old emotional weight are you finally ready to release?',
+          localEat: '망상 솔밭 감자옹심이 & 시골 된장찌개'
+        },
+        {
+          day: 4,
+          routeTitle: '망상 &rarr; 묵호 등대마을 & 논골담길',
+          distance: '17.5 km',
+          duration: '약 5시간 15분',
+          elevation: '최대 120m (언덕 골목길)',
+          stayName: '묵호 바람의 언덕 소형 호텔 & 민박',
+          stayDistance: '종점 도보 400m (도보 5분)',
+          facilities: ['오션뷰 테라스', '늦은 체크인 가능', '세탁 건조기'],
+          reflectionQuestion: '벽화마을 어르신과 나눈 짧은 눈인사 속에서 어떤 사람의 온기를 발견했나요?',
+          reflectionQuestionEn: 'In that fleeting smile with a village elder, what human warmth did you uncover?',
+          localEat: '묵호항 곰치국 & 물회'
+        },
+        {
+          day: 5,
+          routeTitle: '묵호 &rarr; 동해항 & 추암 촛대바위 (피날레)',
+          distance: '20.1 km',
+          duration: '약 6시간 30분',
+          elevation: '최대 90m (해안 산책로)',
+          stayName: '동해 추암 순례자 완주 호스텔',
+          stayDistance: '종점 도보 300m (도보 4분)',
+          facilities: ['완주증서 및 스탬프 날인소', '축하 다과회', '역전 픽업 서비스'],
+          reflectionQuestion: '5일 전의 나와 오늘의 나, 발걸음은 가벼워졌나요 아니면 마음이 단단해졌나요?',
+          reflectionQuestionEn: 'Between who you were 5 days ago and who you are now: is your stride lighter, or your spirit grounded?',
+          localEat: '추암 촛대바위 성게알 비빔밥'
+        }
+      ],
+      jeju: [
+        {
+          day: 1,
+          routeTitle: '제주 남원포구 &rarr; 쇠소깍 (올레 5코스)',
+          distance: '14.2 km',
+          duration: '약 4시간 30분',
+          elevation: '완만한 해안 바당길',
+          stayName: '위미 동백나무 돌담 민박',
+          stayDistance: '종점 도보 250m (도보 3분)',
+          facilities: ['동백차 웰컴티', '짐 배송 보관', '세탁 지원'],
+          reflectionQuestion: '귤밭 사이 돌담을 천천히 걸으며, 요즘 내 마음을 가장 조급하게 만들었던 일은 무엇이었나요?',
+          reflectionQuestionEn: 'Walking past basalt walls and orange groves, what has been making you feel most rushed lately?',
+          localEat: '보말칼국수 & 성게미역국'
+        },
+        {
+          day: 2,
+          routeTitle: '쇠소깍 &rarr; 서귀포 올레여행자센터 (올레 6코스)',
+          distance: '15.8 km',
+          duration: '약 5시간',
+          elevation: '숲길과 바위 오솔길',
+          stayName: '서귀포 순례자 여행자 스테이',
+          stayDistance: '종점 도보 100m (도보 1분)',
+          facilities: ['올레 공식 정보센터', '순례자 라운지', '공용 주방'],
+          reflectionQuestion: '정방폭포 물소리 앞에서, 내 삶에서 진정으로 감사하고 싶은 한 사람은 누구인가요?',
+          reflectionQuestionEn: 'Before the rushing waterfall, who is the one person you feel genuinely grateful for?',
+          localEat: '서귀포 매일올레시장 꽁치김밥 & 흑돼지 국밥'
+        },
+        {
+          day: 3,
+          routeTitle: '서귀포 &rarr; 월평마을 아왜낭목 (올레 7코스)',
+          distance: '17.6 km',
+          duration: '약 5시간 30분',
+          elevation: '외돌개 & 돔베낭 해안길',
+          stayName: '월평마을 달빛 게스트하우스',
+          stayDistance: '종점 도보 450m (도보 6분)',
+          facilities: ['달빛 정원', '빨래건조 지원', '버스정류장 직결'],
+          reflectionQuestion: '3일간 걷기를 마치며, 일상으로 돌아갔을 때 꼭 지키고 싶은 나만의 새로운 약속은 무엇인가요?',
+          reflectionQuestionEn: 'As this 3-day walk concludes, what new promise will you keep for yourself back home?',
+          localEat: '제주 고기국수 & 돔베고기'
+        }
+      ]
+    };
+
+    /* ============================================================
+       2. MULTILINGUAL DICTIONARY (KO / EN)
+       ============================================================ */
+    const I18N_DICT = {
+      ko: {
+        topBanner: "2026 한국형 순례길(Korean Camino) 시범 여정: 글로벌 순례자 얼리버드 모집 중",
+        topBannerCta: "여정 둘러보기 →",
+        brandSub: "길을 찾는 것이 아니라 나를 찾는 여행",
+        navPhilosophy: "철학과 가치",
+        navFlow: "여정 흐름",
+        navFinder: "맞춤 Journey",
+        navStage: "스테이지 & 숙소",
+        navStories: "순례자 기록",
+        navFounder: "창업자 이야기",
+        navPassportBtn: "여권 발급 & 시작하기",
+        heroBadge: "한국형 순례길 • Korean Camino for Global Travelers",
+        heroTitle1: "길을 찾는 것이 아니라,",
+        heroTitle2: "나를 찾는 여행",
+        heroDesc: "한국의 길을 걷고, 나의 이야기를 남기며, 지역의 온기를 경험하는 장거리 걷기 여행 플랫폼. 왜 걷는가에 대한 해답과 온전한 하루의 쉼을 설계해 드립니다.",
+        heroBtnFind: "내 목적에 맞는 여정 찾기",
+        heroBtnStage: "스테이지 & 숙소 설계",
+        metric1: "코리아둘레길 인프라 연계",
+        metric2: "종점 직결 도보권 숙소 매칭",
+        metric3: "다국어 안심 길 & 대중교통 안내",
+        metric4: "순례자의 삶과 생각 기록",
+        phiBadge: "The Core Philosophy",
+        phiTitle: "한국의 수많은 길, 우리는 왜 등산 코스로만 걸었을까요?",
+        phiDesc: "길 자체는 이미 충분합니다. 부족한 것은 그 길을 하나의 온전한 삶의 쉼과 성찰, 그리고 지역과의 따뜻한 연결로 엮어주는 서비스였습니다.",
+        pillar1Title: "Route가 아닌 Journey",
+        pillar1Desc: "단순히 코스 길이와 난이도(km/소요시간)를 묻지 않습니다. 지친 마음의 회복, 인생의 전환, 바다와 함께 걷는 사색 등 당신의 '걷는 목적'에 맞춘 여정을 제안합니다.",
+        pillar1Tag: "목적 • 체력 맞춤형 큐레이션",
+        pillar2Title: "종점 도보 1km, 쉼의 안식처",
+        pillar2Desc: "하루 20km를 걸은 후 다시 버스를 타고 먼 시내 숙소로 가지 마세요. 오늘 걸음이 멈추는 종점 반경 1km 내의 민박, 게스트하우스, 세탁 및 따뜻한 로컬 식당을 직접 잇습니다.",
+        pillar2Tag: "종점 직결 숙소 & 편의시설 보장",
+        pillar3Title: "별점 대신 깊은 깨달음의 기록",
+        pillar3Desc: "\"경치가 좋아요\" 같은 일회성 리뷰 대신 \"오늘 길에서 무엇을 느꼈나요?\"라는 물음에 남겨진 이전 순례자들의 진솔한 고백과 한 줄이 다음 여행자에게 횃불이 됩니다.",
+        pillar3Tag: "디지털 순례자 여권 & Story 아카이브",
+        flowBadge: "How It Works",
+        flowTitle: "목적 선택에서 Pilgrim Story까지",
+        flowDesc: "사용자의 걷는 이유에서 출발하여, 하루 일정과 지역의 따뜻한 환대를 거쳐 다음 여행자에게 영감을 남기는 5단계 여정입니다.",
+        step1Title: "걷는 목적 선택",
+        step1Desc: "회복, 나를 찾는 길, 바다, 사찰, 도전 등 내면의 이유 선택",
+        step2Title: "맞춤 Journey 추천",
+        step2Desc: "일정(3일~7일), 체력, 언어 환경에 최적화된 테마형 장거리 여정 매칭",
+        step3Title: "일별 Stage & 숙소",
+        step3Desc: "하루 15~20km 분할과 오늘의 종점 도보 1km 안 숙박·세탁소 완벽 연결",
+        step4Title: "지역 경험 연결",
+        step4Desc: "사찰 템플스테이, 시골 오일장, 마을 어르신의 따뜻한 국밥 한 그릇",
+        step5Title: "Pilgrim Story 기록",
+        step5Desc: "길 위에서 마주한 내면의 감정을 기록하고 디지털 스탬프 여권 완성",
+        finderBadge: "Interactive Matcher",
+        finderTitle: "나에게 맞는 Korean Camino 찾기",
+        finderDesc: "당신의 마음 상태와 여행 가능한 기간을 선택하세요. 최적화된 하루 일정과 지역 쉼터가 준비되어 있습니다.",
+        filterPurposeLabel: "1. 걷는 목적 (Purpose)",
+        filterDaysLabel: "2. 일정 기간 (Duration)",
+        filterPaceLabel: "3. 하루 희망 거리 (Daily Pace)",
+        plannerBadge: "Stage & Local Stay Planner",
+        plannerTitle: "하루 단위 스테이지 & 종점 ±1km 숙소",
+        plannerDesc: "걷기가 끝난 후 피곤한 몸을 이끌고 먼 곳으로 이동하지 마세요. 오늘의 종점에서 걸어서 닿는 로컬 숙소와 회고 질문을 매일 제공합니다.",
+        passportCta: "나만의 모바일 순례 여권 발급받기",
+        storyBadge: "Pilgrim Community & Stories",
+        storyTitle: "단순한 길 후기가 아닙니다. 먼저 걸은 사람들의 깨달음과 위로입니다.",
+        storyDesc: "\"경치 좋고 오르막이 힘들었어요\" 같은 흔한 등산 리뷰 대신, \"오늘 길에서 무엇을 내려놓았나요?\"라는 성찰 질문에 남겨진 생생한 이야기들입니다. 같은 길을 걸어가는 순례자들의 문장이 서로의 이정표가 됩니다.",
+        founderBadge: "Founder's Note",
+        founderTitle: "아이슬란드의 오로라부터 산티아고의 순례길까지, 그리고 다시 한국의 아름다운 길로.",
+        founderP1: "아이슬란드에서 1년간의 워킹홀리데이를 마치고 한국으로 돌아오기 전, 유럽 여행의 마지막 종착지에서 산티아고 순례길을 걸었습니다.",
+        founderP2: "산티아고에서 가장 큰 울림을 주었던 것은 유명 관광 명소가 아니었습니다. 매일 묵묵히 걷고, 낯선 이와 빵을 나누고, 하루의 피로 끝에 나 자신을 돌아보는 지극히 단순한 생활 속에서 저마다의 상처가 회복되는 기적이었습니다.",
+        founderP3: "한국에 돌아왔을 때 마음속에 깊은 물음표가 남았습니다. \"우리에게도 제주올레, 해파랑길, 코리아둘레길처럼 경이로운 4,500km의 길이 있는데, 왜 우리는 이를 단순한 체력 훈련이나 난이도 중심의 등산 코스로만 소비하고 있을까?\"",
+        founderP4: "WALK KOREA는 한국의 길을 누구나 자신의 이유로 걷고, 자신의 이야기를 남기며, 시골 작은 마을의 할머니와 따뜻한 식탁을 마주하는 '한국형 순례길(Korean Camino)'로 다시 태어나게 하기 위한 담대한 여정입니다.",
+        globalBadge: "Global Pilgrim Ready",
+        globalTitle: "외국인 여행자도 언어와 길 잃을 걱정 없이",
+        globalDesc: "한국 대중교통 환승, 작은 시골 마을 숙소 체크인, 식사 예절과 비상 안전까지 다국어로 통합 설계되어 해외 순례자도 안심하고 발걸음을 옮깁니다.",
+        feat1Title: "다국어 안심 가이드",
+        feat1Desc: "한국어, 영어, 일본어, 중국어로 제공되는 코스 해설과 문화 가이드북.",
+        feat2Title: "순례자 짐 배송 서비스",
+        feat2Desc: "무거운 캐리어는 다음 종점 숙소로 먼저 보내고 가벼운 배낭 하나로 걷기.",
+        feat3Title: "실시간 안전 & SOS",
+        feat3Desc: "길 이탈 알림, 최근 통제 구간 우회로 안내, 원클릭 비상 연락망 가동.",
+        feat4Title: "로컬 버스 & 이탈 지원",
+        feat4Desc: "체력 저하시 가까운 버스 정류장과 서울/거점 도시 복귀 경로 원스톱 매핑.",
+        ctaTitle: "당신의 첫 번째 순례 여정을 시작하세요",
+        ctaDesc: "모두의 창업 2기 파일럿 여정에 사전 등록하시면, 'Korean Camino 가이드북 & 모바일 여권'을 가장 먼저 무료로 발급해 드립니다.",
+        ctaSubmitBtn: "사전 등록하기",
+        ctaSubNote: "스팸 없이 오직 공식 파일럿 여정 초대장과 특별 할인 혜택만 전달됩니다.",
+        modalTitle: "디지털 순례 여권 사전 발급",
+        modalDesc: "당신의 첫 번째 한국 순례길을 함께 시작할 정보를 입력해주세요.",
+        modalNameLabel: "성함 또는 닉네임",
+        modalEmailLabel: "이메일 주소",
+        modalInterestLabel: "가장 걷고 싶은 여정",
+        modalBtnSubmit: "여권 발급 및 초대장 받기"
+      },
+      en: {
+        topBanner: "2026 Korean Camino Pilot: Early-Bird Registration Open for Global Pilgrims",
+        topBannerCta: "Explore Journeys →",
+        brandSub: "Not looking for a route, but finding myself",
+        navPhilosophy: "Philosophy",
+        navFlow: "Journey Flow",
+        navFinder: "Curated Journeys",
+        navStage: "Stages & Stays",
+        navStories: "Pilgrim Stories",
+        navFounder: "Founder's Story",
+        navPassportBtn: "Get Pilgrim Passport",
+        heroBadge: "Korean Camino for Global Travelers",
+        heroTitle1: "Not just finding a route,",
+        heroTitle2: "Finding Myself on the Trail",
+        heroDesc: "A multi-day walking journey platform across Korea. Walk the historic paths, document inner reflection, and connect with hospitable local villages.",
+        heroBtnFind: "Find My Tailored Journey",
+        heroBtnStage: "Explore Stages & Stays",
+        metric1: "4,500km Korea Dulegil Network",
+        metric2: "±1km End-of-Day Stay Matching",
+        metric3: "100% Multilingual Transit & Safety",
+        metric4: "1,240+ Pilgrim Reflections Logged",
+        phiBadge: "The Core Philosophy",
+        phiTitle: "Korea has 4,500km of scenic trails. Why did we only walk them as mere hiking courses?",
+        phiDesc: "The trails already exist. What was missing was designing them into a mindful, self-reflective journey connected with local village hospitality.",
+        pillar1Title: "Journeys, Not Just Routes",
+        pillar1Desc: "We do not just ask for kilometers and elevation. We ask why you walk—recovery from burnout, life crossroads, or seaside stillness—and craft a tailored multi-day itinerary.",
+        pillar1Tag: "Purpose-Driven Walking Itineraries",
+        pillar2Title: "Walk-to-Stay (±1km Guarantee)",
+        pillar2Desc: "Never take another bus to a distant city hotel after a 20km walk. We match verified local guesthouses, warm meals, and laundry within 1km of your daily finish point.",
+        pillar2Tag: "End-of-Stage Accommodations",
+        pillar3Title: "Reflections Over Star Ratings",
+        pillar3Desc: "Instead of generic 'nice view' reviews, pilgrims answer 'What did you let go of on the trail today?' One person's revelation becomes the next pilgrim's torch.",
+        pillar3Tag: "Digital Pilgrim Passport & Stories",
+        flowBadge: "How It Works",
+        flowTitle: "From Purpose Selection to Pilgrim Story",
+        flowDesc: "Starting from your inner intention, progressing through daily stages and village hospitality, and concluding with a personal story archived for future walkers.",
+        step1Title: "Choose Your Purpose",
+        step1Desc: "Healing, self-reflection, coastal quietude, temple meditation, or physical challenge.",
+        step2Title: "Curated Journey Match",
+        step2Desc: "Personalized multi-day route based on your pace, duration, and language.",
+        step3Title: "Daily Stages & Stays",
+        step3Desc: "15~20km balanced stages ending within 1km of local guesthouses and laundry.",
+        step4Title: "Local Village Hospitality",
+        step4Desc: "Temple stays, rural 5-day markets, and hearty home-cooked meals by grandmothers.",
+        step5Title: "Pilgrim Story & Passport",
+        step5Desc: "Collect digital location stamps and record your daily reflection sentence.",
+        finderBadge: "Interactive Matcher",
+        finderTitle: "Find Your Korean Camino",
+        finderDesc: "Select your state of mind and preferred travel duration. We prepare realistic daily stages and verified stays.",
+        filterPurposeLabel: "1. Walking Purpose",
+        filterDaysLabel: "2. Journey Duration",
+        filterPaceLabel: "3. Preferred Daily Pace",
+        plannerBadge: "Stage & Local Stay Planner",
+        plannerTitle: "Daily Stages & Walkable Stays (±1km)",
+        plannerDesc: "No long detours when your feet are tired. Enjoy cozy village guesthouses and daily mindful reflection prompts waiting at each stage end.",
+        passportCta: "Issue My Digital Pilgrim Passport",
+        storyBadge: "Pilgrim Community & Stories",
+        storyTitle: "Not generic trail reviews. Real confessions and wisdom from fellow walkers.",
+        storyDesc: "Instead of 'steep hill and nice weather,' our pilgrims answer 'What did you let go of today?' These genuine sentences light up the path for whoever comes next.",
+        founderBadge: "Founder's Note",
+        founderTitle: "From Iceland's Auroras to the Camino de Santiago, and Back to Korea's Trails.",
+        founderP1: "After concluding a year of working holiday in Iceland, I walked the Camino de Santiago at the end of my European travel.",
+        founderP2: "What moved me wasn't famous tourist landmarks. It was the simple rhythm of walking all day, breaking bread with strangers, and sitting quietly in reflection at sunset.",
+        founderP3: "Returning to Korea, I asked myself: 'Korea has over 4,500km of breathtaking coastline and mountain trails. Why do we consume them only as physical hiking workouts?'",
+        founderP4: "WALK KOREA was born to transform Korea's existing paths into a true pilgrimage—where anyone can walk for their own reason, write their story, and be welcomed by warm villages.",
+        globalBadge: "Global Pilgrim Ready",
+        globalTitle: "Worry-Free Journey for International Travelers",
+        globalDesc: "From rural bus connections and English luggage transfer to temple etiquette and emergency SOS, we eliminate all language and transit friction.",
+        feat1Title: "Multilingual Trail Guides",
+        feat1Desc: "Comprehensive cultural context and directions in English, Korean, Japanese, and Chinese.",
+        feat2Title: "Luggage Transfer (Baggage)",
+        feat2Desc: "Walk light with a small daypack while your heavy luggage waits at tonight's guesthouse.",
+        feat3Title: "Real-time Safety & SOS",
+        feat3Desc: "Off-route alerts, trail condition warnings, and direct multilingual emergency support.",
+        feat4Title: "Rural Transit & Early Exit",
+        feat4Desc: "Clear rural bus stop mapping and return routes to Seoul whenever you need a rest.",
+        ctaTitle: "Begin Your Korean Camino Today",
+        ctaDesc: "Register early for the 2026 pilot journey to receive the official 'Korean Camino Digital Passport & Field Guidebook' for free.",
+        ctaSubmitBtn: "Pre-Register Now",
+        ctaSubNote: "Zero spam. Only official pilot invitations, offline gathering details, and early benefits.",
+        modalTitle: "Digital Pilgrim Passport Registration",
+        modalDesc: "Enter your details to receive your digital passport and pilot invitation.",
+        modalNameLabel: "Your Name or Pilgrim Nickname",
+        modalEmailLabel: "Email Address",
+        modalInterestLabel: "Preferred Journey",
+        modalBtnSubmit: "Issue Passport & Get Invite"
+      }
+    };
+
+    let currentLang = 'ko';
+    let currentFilter = {
+      purpose: 'all',
+      days: 'all',
+      pace: 18
+    };
+    let currentStageTheme = 'haeparang';
+    let activeStageDay = 1;
+
+    /* ============================================================
+       3. DOM INITIALIZATION & EVENT HANDLERS
+       ============================================================ */
+    window.addEventListener('DOMContentLoaded', () => {
+      // Initialize Lucide Icons
+      if (window.lucide) {
+        lucide.createIcons();
+      }
+      // Initial render of journeys & stages
+      renderJourneys();
+      renderStageDayPills();
+      renderActiveStageDetail();
+    });
+
+    // Language Toggle Function
+    function toggleLanguage() {
+      currentLang = currentLang === 'ko' ? 'en' : 'ko';
+      document.getElementById('currentLangLabel').innerText = currentLang === 'ko' ? 'EN' : '한국어';
+      
+      // Update data-i18n elements
+      const elements = document.querySelectorAll('[data-i18n]');
+      elements.forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (I18N_DICT[currentLang] && I18N_DICT[currentLang][key]) {
+          el.innerText = I18N_DICT[currentLang][key];
+        }
+      });
+
+      // Update interactive dynamically rendered components
+      renderJourneys();
+      renderActiveStageDetail();
+    }
+
+    // Scroll helper
+    function scrollToSection(id) {
+      const target = document.getElementById(id);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    // Mobile Navigation Drawer Toggle
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobileMenu');
+      menu.classList.toggle('hidden');
+    }
+
+    /* ============================================================
+       4. INTERACTIVE JOURNEY FINDER LOGIC
+       ============================================================ */
+    function setFilter(type, value) {
+      currentFilter[type] = value;
+      
+      // Update UI active styling
+      if (type === 'purpose') {
+        document.querySelectorAll('.purpose-btn').forEach(btn => {
+          if (btn.getAttribute('data-val') === value) {
+            btn.className = 'purpose-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-stone-900 text-white transition';
+          } else {
+            btn.className = 'purpose-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-stone-100 text-stone-700 hover:bg-stone-200 transition';
+          }
+        });
+      } else if (type === 'days') {
+        document.querySelectorAll('.duration-btn').forEach(btn => {
+          if (btn.getAttribute('data-val') === value) {
+            btn.className = 'duration-btn px-3 py-2 rounded-xl text-xs font-semibold bg-stone-900 text-white transition';
+          } else {
+            btn.className = 'duration-btn px-3 py-2 rounded-xl text-xs font-semibold bg-stone-100 text-stone-700 hover:bg-stone-200 transition';
+          }
+        });
+      }
+
+      renderJourneys();
+    }
+
+    function updatePace(val) {
+      currentFilter.pace = parseInt(val, 10);
+      document.getElementById('paceDisplay').innerText = `${val} km/day`;
+      renderJourneys();
+    }
+
+    function renderJourneys() {
+      const grid = document.getElementById('journeyGrid');
+      grid.innerHTML = '';
+
+      const filtered = JOURNEY_DATABASE.filter(item => {
+        // Purpose check
+        if (currentFilter.purpose !== 'all' && !item.purpose.includes(currentFilter.purpose)) {
+          return false;
+        }
+        // Duration check
+        if (currentFilter.days === '3' && item.durationDays > 3) return false;
+        if (currentFilter.days === '5+' && item.durationDays < 4) return false;
+        return true;
+      });
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div class="col-span-3 text-center py-12 bg-white rounded-3xl border border-stone-200 p-8">
+            <i data-lucide="info" class="w-10 h-10 text-stone-400 mx-auto mb-3"></i>
+            <p class="text-stone-700 font-bold text-base mb-1">선택하신 조건에 꼭 맞는 여정을 준비 중입니다.</p>
+            <p class="text-stone-500 text-xs">필터 조건을 완화하시거나 사전 등록을 통해 원하시는 지역을 제안해주세요.</p>
+          </div>
+        `;
+        if (window.lucide) lucide.createIcons();
+        return;
+      }
+
+      filtered.forEach(j => {
+        const title = currentLang === 'ko' ? j.koreanTitle : j.title;
+        const summary = currentLang === 'ko' ? j.summaryKo : j.summaryEn;
+        const badge = currentLang === 'ko' ? j.badge : j.badgeEn;
+        
+        const card = document.createElement('div');
+        card.className = 'bg-white rounded-3xl overflow-hidden border border-stone-200 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group';
+        card.innerHTML = `
+          <div class="relative h-48 overflow-hidden bg-stone-900">
+            <img src="${j.imageUrl}" alt="${title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.src='https://placehold.co/600x400/233d2e/ffffff?text=${encodeURIComponent(j.title)}'"/>
+            <div class="absolute top-4 left-4">
+              <span class="px-3 py-1 rounded-full text-[11px] font-bold bg-stone-900/80 text-amber-300 backdrop-blur-sm border border-stone-700">${badge}</span>
+            </div>
+            <div class="absolute bottom-3 right-3">
+              <span class="px-2.5 py-1 rounded-lg text-xs font-mono font-bold bg-white/90 text-stone-900 shadow">${j.totalDistanceKm} km (${j.durationDays} Days)</span>
+            </div>
+          </div>
+          <div class="p-6 flex-1 flex flex-col justify-between">
+            <div>
+              <h3 class="text-lg font-bold text-stone-900 mb-2 font-serif">${title}</h3>
+              <p class="text-xs text-stone-600 leading-relaxed line-clamp-3 mb-4 font-sans">${summary}</p>
+              
+              <div class="space-y-1.5 pt-3 border-t border-stone-100 text-xs text-stone-600 mb-4">
+                <div class="flex items-center gap-2">
+                  <i data-lucide="bed" class="w-3.5 h-3.5 text-camino-clay"></i>
+                  <span class="font-medium">${j.stayGuarantee}</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <i data-lucide="clock" class="w-3.5 h-3.5 text-camino-sage"></i>
+                  <span>권장 일일 페이스: <strong>${j.recommendedPace} km/day</strong></span>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex flex-wrap gap-1.5 mb-4">
+                ${j.tags.map(t => `<span class="text-[10px] bg-stone-100 text-stone-600 px-2 py-0.5 rounded-md font-medium">#${t}</span>`).join('')}
+              </div>
+              <button onclick="selectJourneyForStage('${j.id}')" class="w-full py-2.5 rounded-xl bg-stone-900 hover:bg-camino-forest text-stone-100 text-xs font-semibold transition flex items-center justify-center gap-1.5">
+                <span>일별 일정 및 숙소 보기</span>
+                <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+
+      if (window.lucide) {
+        lucide.createIcons();
+      }
+    }
+
+    /* ============================================================
+       5. INTERACTIVE STAGE & LOCAL STAY PLANNER
+       ============================================================ */
+    function switchStageSample(theme) {
+      currentStageTheme = theme;
+      activeStageDay = 1;
+      
+      const tabH = document.getElementById('tabHaeparang');
+      const tabJ = document.getElementById('tabJeju');
+      
+      if (theme === 'haeparang') {
+        tabH.className = 'px-4 py-2 rounded-xl text-xs font-bold bg-camino-forest text-white transition shadow-sm';
+        tabJ.className = 'px-4 py-2 rounded-xl text-xs font-bold bg-stone-100 text-stone-700 hover:bg-stone-200 transition';
+      } else {
+        tabJ.className = 'px-4 py-2 rounded-xl text-xs font-bold bg-camino-forest text-white transition shadow-sm';
+        tabH.className = 'px-4 py-2 rounded-xl text-xs font-bold bg-stone-100 text-stone-700 hover:bg-stone-200 transition';
+      }
+
+      renderStageDayPills();
+      renderActiveStageDetail();
+    }
+
+    function selectJourneyForStage(journeyId) {
+      if (journeyId.includes('jeju')) {
+        switchStageSample('jeju');
+      } else {
+        switchStageSample('haeparang');
+      }
+      scrollToSection('stage-planner');
+    }
+
+    function renderStageDayPills() {
+      const container = document.getElementById('dayPillContainer');
+      container.innerHTML = '';
+      const list = STAGE_SAMPLES[currentStageTheme];
+
+      list.forEach(item => {
+        const btn = document.createElement('button');
+        const isActive = item.day === activeStageDay;
+        btn.onclick = () => {
+          activeStageDay = item.day;
+          renderStageDayPills();
+          renderActiveStageDetail();
+        };
+        btn.className = isActive 
+          ? 'px-5 py-2.5 rounded-2xl bg-camino-clay text-white text-xs font-bold transition shadow-md shrink-0 flex items-center gap-2'
+          : 'px-5 py-2.5 rounded-2xl bg-white border border-stone-200 text-stone-700 hover:bg-stone-100 text-xs font-semibold transition shrink-0 flex items-center gap-2';
+        btn.innerHTML = `
+          <span>Stage Day ${item.day}</span>
+          <span class="text-[10px] ${isActive ? 'bg-amber-900/40 text-amber-200' : 'bg-stone-100 text-stone-500'} px-2 py-0.5 rounded-full">${item.distance}</span>
+        `;
+        container.appendChild(btn);
+      });
+    }
+
+    function renderActiveStageDetail() {
+      const box = document.getElementById('stageDetailBox');
+      const list = STAGE_SAMPLES[currentStageTheme];
+      const stage = list.find(s => s.day === activeStageDay) || list[0];
+      const reflectionQ = currentLang === 'ko' ? stage.reflectionQuestion : stage.reflectionQuestionEn;
+
+      box.innerHTML = `
+        <!-- Left: Stage Route & Daily Reflection Prompt -->
+        <div class="lg:col-span-6 space-y-6">
+          <div class="border-b border-stone-200 pb-5">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="px-2.5 py-0.5 rounded-md bg-stone-900 text-amber-300 text-xs font-mono font-bold">DAY ${stage.day}</span>
+              <span class="text-xs text-stone-500 font-medium">${stage.duration} • ${stage.elevation}</span>
+            </div>
+            <h3 class="text-xl sm:text-2xl font-bold text-stone-900 font-serif">${stage.routeTitle}</h3>
+          </div>
+
+          <!-- The Core Philosophical Question for This Day -->
+          <div class="bg-amber-50/80 border border-amber-200/80 rounded-2xl p-5 relative">
+            <div class="flex items-start gap-3">
+              <div class="w-8 h-8 rounded-xl bg-camino-clay text-white flex items-center justify-center shrink-0">
+                <i data-lucide="feather" class="w-4 h-4"></i>
+              </div>
+              <div>
+                <p class="text-[11px] font-bold text-camino-clay uppercase tracking-wider mb-1 font-sans">Today's Reflection Question (오늘의 회고 질문)</p>
+                <p class="text-sm font-serif italic text-stone-800 leading-relaxed font-medium">"${reflectionQ}"</p>
+                <p class="text-[11px] text-stone-500 mt-2 font-sans">하루를 마치고 Pilgrim Story에 사진과 함께 한 줄 기록을 남겨보세요.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Trail Highlights & Local Food -->
+          <div class="bg-white rounded-2xl p-5 border border-stone-200 space-y-3">
+            <div class="flex items-center gap-2 text-xs font-bold text-stone-800">
+              <i data-lucide="utensils" class="w-4 h-4 text-camino-forest"></i>
+              <span>오늘의 추천 로컬 밥상:</span>
+              <span class="font-normal text-stone-600">${stage.localEat}</span>
+            </div>
+            <div class="flex items-center gap-2 text-xs font-bold text-stone-800">
+              <i data-lucide="info" class="w-4 h-4 text-camino-sage"></i>
+              <span>코스 난이도 팁:</span>
+              <span class="font-normal text-stone-600">중간 완만한 그늘 구간 다수, 생수 1병 필수 지참 권장.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: End-of-Stage Guesthouse (±1km Guarantee) Card -->
+        <div class="lg:col-span-6">
+          <div class="bg-white rounded-3xl border-2 border-camino-clay/40 p-6 sm:p-7 shadow-lg relative">
+            
+            <div class="flex justify-between items-start mb-4">
+              <div>
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-900 mb-2">
+                  <i data-lucide="map-pin" class="w-3.5 h-3.5 text-emerald-700"></i>
+                  <span>오늘 종점 ${stage.stayDistance}</span>
+                </span>
+                <h4 class="text-lg font-bold text-stone-900 font-serif">${stage.stayName}</h4>
+              </div>
+              <span class="text-xs bg-stone-100 text-stone-700 px-2.5 py-1 rounded-lg font-semibold">파트너 안심 숙소</span>
+            </div>
+
+            <p class="text-xs text-stone-600 mb-5 leading-relaxed">
+              장거리 순례자를 위해 맞춤 설계된 공식 연계 숙소입니다. 피로 회복을 위한 편의시설과 따뜻한 지역민의 환대가 준비되어 있습니다.
+            </p>
+
+            <!-- Guesthouse Features Badge Grid -->
+            <div class="grid grid-cols-2 gap-2.5 mb-6">
+              ${stage.facilities.map(f => `
+                <div class="flex items-center gap-2 text-xs text-stone-700 bg-stone-50 p-2.5 rounded-xl border border-stone-100">
+                  <i data-lucide="check" class="w-3.5 h-3.5 text-camino-clay"></i>
+                  <span>${f}</span>
+                </div>
+              `).join('')}
+            </div>
+
+            <!-- Booking & Map Action Buttons -->
+            <div class="flex flex-col sm:flex-row gap-3 pt-4 border-t border-stone-100">
+              <button onclick="openEarlyAccessModal()" class="flex-1 py-3 rounded-xl bg-camino-forest hover:bg-stone-900 text-white font-bold text-xs transition flex items-center justify-center gap-2 shadow">
+                <i data-lucide="calendar-check" class="w-4 h-4 text-amber-300"></i>
+                <span>숙소 사전 예약 연결</span>
+              </button>
+              <button onclick="showToast('안내', '해당 스테이지의 상세 GPS 오프라인 트랙은 앱에서 다운로드 가능합니다.')" class="px-5 py-3 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-800 font-semibold text-xs transition flex items-center justify-center gap-1.5">
+                <i data-lucide="map" class="w-4 h-4"></i>
+                <span>상세 경로 지도</span>
+              </button>
+            </div>
+
+          </div>
+        </div>
+      `;
+
+      if (window.lucide) {
+        lucide.createIcons();
+      }
+    }
+
+    /* ============================================================
+       6. DIGITAL PASSPORT STAMP INTERACTION
+       ============================================================ */
+    function toggleStamp(elem) {
+      if (elem.classList.contains('stamp-stamped')) {
+        elem.classList.remove('stamp-stamped');
+        showToast('스탬프 해제', '해당 지점의 인증 도장이 초기화되었습니다.');
+      } else {
+        elem.classList.add('stamp-stamped');
+        elem.style.borderColor = '#eab308';
+        elem.style.backgroundColor = 'rgba(234, 179, 8, 0.15)';
+        showToast('스탬프 날인 완료!', '디지털 순례자 여권에 방문 도장이 저장되었습니다.');
+      }
+    }
+
+    /* ============================================================
+       7. MODAL & TOAST NOTIFICATION HELPERS
+       ============================================================ */
+    function openEarlyAccessModal() {
+      document.getElementById('earlyAccessModal').classList.remove('hidden');
+    }
+
+    function closeEarlyAccessModal() {
+      document.getElementById('earlyAccessModal').classList.add('hidden');
+    }
+
+    function handleModalFormSubmit(e) {
+      e.preventDefault();
+      const name = document.getElementById('modalName').value;
+      const email = document.getElementById('modalEmail').value;
+      closeEarlyAccessModal();
+      showToast(`${name} 순례자님 환영합니다!`, `${email}로 모바일 여권 발급 링크와 파일럿 초대장이 전송되었습니다.`);
+    }
+
+    function handleEarlyAccessSubmit(e) {
+      e.preventDefault();
+      const email = document.getElementById('ctaEmailInput').value;
+      document.getElementById('ctaEmailInput').value = '';
+      showToast('사전 등록 완료!', `${email}로 한국형 순례길 가이드북(PDF)이 발송되었습니다.`);
+    }
+
+    function showToast(title, message) {
+      const toast = document.getElementById('toastNotification');
+      document.getElementById('toastTitle').innerText = title;
+      document.getElementById('toastMessage').innerText = message;
+      
+      toast.classList.remove('hidden');
+      toast.classList.remove('translate-y-4');
+      toast.classList.add('translate-y-0');
+
+      setTimeout(() => {
+        toast.classList.add('translate-y-4');
+        setTimeout(() => toast.classList.add('hidden'), 300);
+      }, 4000);
+    }
+  </script>
+</body>
+</html>
