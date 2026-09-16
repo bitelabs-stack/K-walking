@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://bitelabs-stack.github.io/K-walking/sitemap.xml
