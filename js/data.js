@@ -180,6 +180,10 @@ window.WK_DATA = {
     certMeta: { en: '5 days · 101.2 km · Gangneung → Samcheok', ko: '5일 · 101.2 km · 강릉 → 삼척' },
     certLine: { en: 'Five places, five lines — the walk in your own words.', ko: '다섯 곳, 다섯 문장 — 내 말로 남긴 나의 길.' },
 
+    installed: { en: 'Installed. Open Walk Korea from your home screen.', ko: '설치했어요. 홈 화면에서 Walk Korea를 열어 보세요.' },
+    copied: { en: 'Link copied.', ko: '링크를 복사했어요.' },
+    copyFailed: { en: 'Copy the address from your browser bar.', ko: '주소창의 주소를 복사해 주세요.' },
+
     errEmpty: { en: 'Enter your email address.', ko: '이메일 주소를 입력해 주세요.' },
     errFormat: { en: 'Enter an email address like name@example.com.', ko: 'name@example.com 형식으로 입력해 주세요.' },
     errConsent: { en: 'Tick the box to agree to beta emails.', ko: '베타 소식 수신에 동의해 주세요.' }

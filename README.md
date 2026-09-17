@@ -58,7 +58,9 @@ js/data.js            예시 데이터: 동해안 경로·질문·스탬프·UI 
 js/main.js            언어 전환 · 메뉴 · 추천 · 필터 · 스테이지 플래너 · 패스포트 · 폼
 assets/img/           최적화된 사진 + OG 이미지
 assets/icons/         파비콘 · 앱 아이콘
-manifest.webmanifest  웹 앱 매니페스트
+manifest.webmanifest  웹 앱 매니페스트 (설치 정보)
+sw.js                 서비스 워커 (오프라인 지원·설치)
+assets/screenshots/   설치 화면에 쓰는 앱 스크린샷
 robots.txt, sitemap.xml  검색엔진용 (GitHub Pages 주소 기준)
 .nojekyll             GitHub Pages에서 Jekyll 처리 없이 정적 파일 그대로 배포
 ```
@@ -66,6 +68,21 @@ robots.txt, sitemap.xml  검색엔진용 (GitHub Pages 주소 기준)
 ## 배포 (GitHub Pages)
 
 `main` 브랜치 루트(`/`)에서 GitHub Pages로 배포됩니다. `main`에 푸시하면 1~2분 안에 사이트가 갱신됩니다.
+
+CSS·JS를 수정하면 `index.html`의 `?v=날짜` 값을 함께 올려 주세요. 예전에 방문한 브라우저도 새 파일을 바로 받습니다.
+
+## 앱 설치 (PWA)
+
+- `manifest.webmanifest`: 앱 이름·아이콘·바로가기(스테이지 플래너, Journey, 베타)·설치 화면 스크린샷(`assets/screenshots/`)
+- `sw.js`: 서비스 워커. 페이지·CSS·JS는 **온라인이면 항상 최신**을 받고, 오프라인일 때 저장본을 보여줍니다. 사진은 저장본을 먼저 쓰고 뒤에서 갱신합니다.
+- 설치 버튼(첫 화면, 모바일 메뉴, 하단 고정 바, 푸터)은 설치할 수 있는 환경에서만 보입니다.
+
+| 환경 | 설치 버튼을 누르면 |
+|---|---|
+| Android Chrome·삼성 인터넷, PC Chrome·Edge | 브라우저 설치 창이 바로 뜸 (접속 직후엔 메뉴 안내가 먼저 보일 수 있음) |
+| iPhone·iPad (Safari 등) | 공유 버튼 → ‘홈 화면에 추가’ 안내 |
+| 카카오톡·인스타그램 등 앱 안 브라우저 | 기본 브라우저로 열기 버튼 + 링크 복사 |
+| 이미 설치해서 앱으로 연 경우 | 버튼 숨김 |
 
 ## 5. 실행
 

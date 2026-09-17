@@ -19,6 +19,8 @@
   const fill = (str, vars) => String(str).replace(/\{(\w+)\}/g, (_, k) => (vars[k] ?? ''));
   const t = (entry, vars = {}) => (entry ? fill(entry[state.lang] ?? entry.en, vars) : '');
   const km = (n) => Number(n).toFixed(1);
+  /* MediaQueryList.addEventListener is missing before Safari 14 */
+  const onMediaChange = (mq, fn) => (mq.addEventListener ? mq.addEventListener('change', fn) : mq.addListener(fn));
   const restartAnimation = (el, cls) => {
     if (!el || reduceMotion) return;
     el.classList.remove(cls);
@@ -115,7 +117,7 @@
         toggle.focus();
       }
     });
-    window.matchMedia('(min-width: 1080px)').addEventListener('change', (mq) => { if (mq.matches) setMenu(false); });
+    onMediaChange(window.matchMedia('(min-width: 1080px)'), (mq) => { if (mq.matches) setMenu(false); });
   }
 
   const onScroll = () => header && header.classList.toggle('is-scrolled', window.scrollY > 8);
@@ -560,11 +562,16 @@
     });
   }
 
-  /* ---------- Comparison table: screen-reader labels for the dots ---------- */
+  /* ---------- Comparison table: column names (shown on phones) and screen-reader values ---------- */
   function labelCompare() {
     const labels = {};
     $$('.cmp-legend [data-i18n^="cmp.v"]').forEach((el) => { labels[el.dataset.i18n.slice(-1)] = el.textContent; });
-    $$('.cmp td[data-v]').forEach((td) => { td.innerHTML = `<span class="sr-only">${esc(labels[td.dataset.v] || '')}</span>`; });
+    const columns = $$('.cmp thead th').map((th) => th.textContent.trim());
+    $$('.cmp tbody tr').forEach((row) => {
+      $$('td[data-v]', row).forEach((td, i) => {
+        td.innerHTML = `<span class="cmp__label">${esc(columns[i + 1] || '')}</span><span class="sr-only">${esc(labels[td.dataset.v] || '')}</span>`;
+      });
+    });
   }
 
   /* ---------- Beta form (preview: nothing is sent) ---------- */
@@ -636,7 +643,126 @@
     glyph.setCurrentTime(0);
   }
 
+  /* ---------- Install as an app (PWA) ---------- */
+  const ua = navigator.userAgent || '';
+  const isIOS = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  const isAndroid = /Android/i.test(ua);
+  const isKakao = /KAKAOTALK/i.test(ua);
+  const isInApp = isKakao || /NAVER\(inapp|Instagram|FBAN|FBAV|FB_IAB|\bLine\/|DaumApps|everytimeApp|BAND\//i.test(ua);
+  const standaloneQuery = window.matchMedia('(display-mode: standalone)');
+  const isStandalone = () => standaloneQuery.matches || window.navigator.standalone === true;
+  const sheet = $('#install-sheet');
+  const toastEl = $('#toast');
+  let deferredPrompt = null;
+  let installed = false;
+  let toastTimer = 0;
+
+  /* prompt: browser install dialog · ios: Share → Add to Home Screen · inapp: open in a real browser · manual: browser menu */
+  function installMode() {
+    if (installed || isStandalone()) return null;
+    if (deferredPrompt) return 'prompt';
+    if (isInApp) return 'inapp';
+    if (isIOS) return 'ios';
+    if (isAndroid) return 'manual';
+    return null;
+  }
+
+  function refreshInstall() {
+    const mode = installMode();
+    $$('[data-install]').forEach((el) => { el.hidden = !mode; });
+    $$('[data-install-alt]').forEach((el) => { el.hidden = Boolean(mode); });
+  }
+
+  function showToast(message) {
+    if (!toastEl) return;
+    toastEl.hidden = false;
+    toastEl.textContent = message;
+    window.clearTimeout(toastTimer);
+    toastTimer = window.setTimeout(() => { toastEl.hidden = true; }, 3200);
+  }
+
+  function openSheet(mode) {
+    if (!sheet) return;
+    $$('[data-variant]', sheet).forEach((el) => { el.hidden = el.dataset.variant !== mode; });
+    $$('[data-ios-only]', sheet).forEach((el) => { el.hidden = !isIOS || isKakao; });
+    const external = $('#open-external', sheet);
+    if (external) {
+      const here = window.location.href;
+      if (isKakao) external.href = `kakaotalk://web/openExternal?url=${encodeURIComponent(here)}`;
+      else if (isAndroid) external.href = `intent://${window.location.host}${window.location.pathname}${window.location.search}#Intent;scheme=https;package=com.android.chrome;end`;
+      external.hidden = !(isKakao || isAndroid);
+    }
+    if (typeof sheet.showModal === 'function') sheet.showModal();
+    else sheet.setAttribute('open', '');
+  }
+
+  function closeSheet() {
+    if (!sheet) return;
+    if (typeof sheet.close === 'function' && sheet.open) sheet.close();
+    else sheet.removeAttribute('open');
+  }
+
+  async function copyLink() {
+    const url = window.location.href;
+    try {
+      await navigator.clipboard.writeText(url);
+      showToast(t(UI.copied));
+    } catch (e) {
+      const field = document.createElement('textarea');
+      field.value = url;
+      field.setAttribute('readonly', '');
+      field.style.position = 'fixed';
+      field.style.opacity = '0';
+      document.body.appendChild(field);
+      field.select();
+      const ok = document.execCommand && document.execCommand('copy');
+      field.remove();
+      showToast(t(ok ? UI.copied : UI.copyFailed));
+    }
+  }
+
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    refreshInstall();
+  });
+  window.addEventListener('appinstalled', () => {
+    installed = true;
+    deferredPrompt = null;
+    closeSheet();
+    refreshInstall();
+    showToast(t(UI.installed));
+  });
+  onMediaChange(standaloneQuery, refreshInstall);
+
+  document.addEventListener('click', (e) => {
+    if (e.target.closest('[data-install]')) {
+      const mode = installMode();
+      setMenu(false);
+      if (mode === 'prompt') {
+        const promptEvent = deferredPrompt;
+        deferredPrompt = null;
+        promptEvent.prompt();
+        Promise.resolve(promptEvent.userChoice).catch(() => null).then(refreshInstall);
+      } else if (mode) {
+        openSheet(mode);
+      }
+      return;
+    }
+    if (e.target.closest('[data-close]')) closeSheet();
+    else if (e.target.closest('[data-copy-link]')) copyLink();
+  });
+  if (sheet) sheet.addEventListener('click', (e) => { if (e.target === sheet) closeSheet(); });
+
+  /* Offline support + installability. Needs HTTPS (or localhost). */
+  if ('serviceWorker' in navigator && window.isSecureContext) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('sw.js').catch(() => { /* runs fine without offline support */ });
+    });
+  }
+
   /* ---------- Init ---------- */
   cacheEnglish();
   applyLang(initialLang());
+  refreshInstall();
 })();

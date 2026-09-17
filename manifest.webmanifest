@@ -1,17 +1,64 @@
 {
+  "id": "./",
   "name": "Walk Korea",
   "short_name": "Walk Korea",
   "description": "Multi-day walking journeys across Korea, planned around why you walk.",
-  "start_url": "./",
+  "lang": "en",
+  "dir": "ltr",
+  "start_url": "./?source=pwa",
   "scope": "./",
   "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
   "background_color": "#F1F4EF",
-  "theme_color": "#1E5B3F",
-  "lang": "en",
+  "theme_color": "#F1F4EF",
+  "categories": ["travel", "lifestyle"],
   "icons": [
-    { "src": "assets/icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "assets/icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "assets/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "assets/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
     { "src": "assets/icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
-    { "src": "assets/icons/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+    { "src": "assets/icons/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ],
+  "shortcuts": [
+    {
+      "name": "Stage Planner",
+      "short_name": "Planner",
+      "description": "Split the East Coast Journey into daily stages",
+      "url": "./?source=shortcut#planner",
+      "icons": [{ "src": "assets/icons/icon-192.png", "sizes": "192x192", "type": "image/png" }]
+    },
+    {
+      "name": "Journeys",
+      "url": "./?source=shortcut#journeys",
+      "icons": [{ "src": "assets/icons/icon-192.png", "sizes": "192x192", "type": "image/png" }]
+    },
+    {
+      "name": "Join the beta",
+      "short_name": "Beta",
+      "url": "./?source=shortcut#beta",
+      "icons": [{ "src": "assets/icons/icon-192.png", "sizes": "192x192", "type": "image/png" }]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "assets/screenshots/phone-home-ko.jpg",
+      "sizes": "780x1688",
+      "type": "image/jpeg",
+      "form_factor": "narrow",
+      "label": "Choose why you want to walk and get a suggested journey"
+    },
+    {
+      "src": "assets/screenshots/phone-planner-en.jpg",
+      "sizes": "780x1688",
+      "type": "image/jpeg",
+      "form_factor": "narrow",
+      "label": "Stage Planner: daily stages with stays near every finish"
+    },
+    {
+      "src": "assets/screenshots/desktop-home-en.jpg",
+      "sizes": "1280x800",
+      "type": "image/jpeg",
+      "form_factor": "wide",
+      "label": "Walk Korea home on desktop"
+    }
   ]
 }

@@ -303,6 +303,21 @@ window.WK_I18N = {
     'beta.preview': '미리보기 사이트입니다. 입력한 정보는 전송되거나 저장되지 않습니다.',
     'beta.success': '미리보기 완료. 실제 서비스에서는 이 단계에서 베타 명단에 등록됩니다.',
 
+    /* Install as an app */
+    'install.cta': '앱 설치',
+    'install.short': '앱 설치',
+    'install.title': 'Walk Korea 앱 설치',
+    'install.lede': '홈 화면에서 앱처럼 바로 열고, 오프라인에서도 여정을 볼 수 있어요.',
+    'install.close': '닫기',
+    'install.ios.1': '브라우저의 공유 버튼 <svg aria-hidden="true"><use href="#i-share"/></svg>을 누르세요.',
+    'install.ios.2': '‘홈 화면에 추가’를 선택하세요.',
+    'install.ios.3': '오른쪽 위 ‘추가’를 누르면 끝이에요.',
+    'install.inapp': '카카오톡·인스타그램 같은 앱 안의 브라우저에서는 설치할 수 없어요. Chrome이나 Safari 같은 기본 브라우저로 열어 주세요.',
+    'install.inapp.ios': '아이폰에서는 ··· 메뉴를 누르고 ‘Safari로 열기’를 선택하세요.',
+    'install.open': '기본 브라우저로 열기',
+    'install.copy': '링크 복사',
+    'install.manual': '브라우저 메뉴(⋮)에서 ‘앱 설치’ 또는 ‘홈 화면에 추가’를 선택하세요.',
+
     /* Footer */
     'foot.tag': '길을 찾는 것이 아니라, 나를 찾는 여행.',
     'foot.explore': '둘러보기',
